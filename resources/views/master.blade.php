@@ -13,7 +13,10 @@
     <!-- Font Lato dari Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Custom Style -->
+    {{-- Apex Chart --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {{-- Custom Style --}}
     <style>
         body {
             font-family: 'Lato', sans-serif;
