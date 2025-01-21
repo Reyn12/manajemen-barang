@@ -40,7 +40,7 @@
                 <span>Select Store</span>
                 <i class="fas fa-chevron-down text-sm"></i>
             </button>
-            <div id="storeDropdown" class="hidden absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 transform origin-top transition-all duration-200 opacity-0 scale-95">
+            <div id="storeDropdown" class="hidden absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 transform origin-top transition-all duration-200 opacity-0 scale-95" >
                 <div class="">
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 bg-blue-50 text-blue-600">All Data</a>
                     <div class="px-4 py-2 text-sm text-gray-500">Filter by:</div>

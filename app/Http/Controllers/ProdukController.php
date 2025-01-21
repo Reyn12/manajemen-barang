@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\Log;
 
 
 class ProdukController extends Controller
@@ -14,8 +15,9 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        $produk = Produk::with('supplier')->latest()->get();
-        return view('produk.produk', compact('produk'));
+        $suppliers = Supplier::all();
+        $produk = Produk::with('supplier')->get();  // tambahkan ini kembali
+        return view('produk.produk', compact('suppliers', 'produk'));
     }
 
     /**
@@ -31,7 +33,38 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_produk' => 'required',
+            'kategori' => 'required',
+            'id_supplier' => 'required',
+            'harga' => 'required|numeric|min:0',
+            'spesifikasi' => 'nullable',
+            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'stok' => 'required|numeric|min:0'
+        ]);
+
+        // Handle foto upload
+        $foto_path = null;
+        if ($request->hasFile('foto_produk')) {
+            $foto = $request->file('foto_produk');
+            $foto_path = $foto->store('produk', 'public');
+        }
+
+        // Simpan data produk
+        Produk::create([
+            'nama_produk' => $request->nama_produk,
+            'kategori' => $request->kategori,
+            'id_supplier' => $request->id_supplier,
+            'harga' => $request->harga,
+            'spesifikasi' => $request->spesifikasi,
+            'foto_produk' => $foto_path,
+            'stok' => $request->stok
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil ditambahkan'
+        ]);
     }
 
     /**

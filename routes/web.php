@@ -18,6 +18,6 @@ Route::delete('/supplier/{id}', [SupplierController::class, 'destroy'])->name('s
 // Route Produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.produk');
 Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit'); // Tambah route edit
-Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
 Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
 Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
