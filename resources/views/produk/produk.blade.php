@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Dashboard')
+@section('title', 'Produk')
 
 @section('content')
     <!-- Isi konten disini -->
@@ -8,15 +8,9 @@
         @include('dashboard.components.sidebar')
         
         <div class="ml-[280px] flex-1 py-4 px-8 bg-white rounded-xl mb-4">
-            @include('dashboard.components.header')
+            @include('produk.components.header')
 
-            @include('dashboard.components.filter-bar')
 
-            @include('dashboard.components.summary3card')
-
-            @include('dashboard.components.chart-3-card')
-
-            @include('dashboard.components.chart-2-card')
         </div>
     </div>
 @endsection

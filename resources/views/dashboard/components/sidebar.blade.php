@@ -1,6 +1,6 @@
-<div class="bg-gray-100 w-64 fixed left-5 top-5 shadow-xl rounded-xl bottom-5">
+<div class="bg-gray-100 w-64 fixed left-5 top-5 shadow-xl rounded-xl bottom-5 ">
     <div class="relative">
-        <div class="bg-white p-3 flex items-center gap-2 border-b m-2 rounded-xl mt-4">
+        <div class="bg-white p-3 flex items-center gap-2 border-b m-2 rounded-xl mt-6 mx-4">
             <div class="bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center">
                 <i class="fas fa-box text-white"></i>
             </div>
@@ -12,7 +12,7 @@
                 <i class="fas fa-chevron-down"></i>
             </button>
         </div>
-
+ 
         <!-- Dropdown Menu -->
         <div id="adminDropdown" class="hidden opacity-0 transform -translate-y-2 absolute w-full px-2 transition-all duration-200">
             <div class="bg-white rounded-xl shadow-lg p-2 space-y-1">
@@ -47,31 +47,40 @@
                 <div class="flex items-center gap-2">
                     <i class="fas fa-asterisk w-5"></i>
                     <span>Dashboard</span>
-                </div>
+                </div> 
                 @if(request()->routeIs('dashboard'))
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
-            </a>
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+            </a> 
+            <a href="{{ route('supplier') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('supplier') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-user w-5"></i>
                     <span>Supplier</span>
                 </div>
+                @if(request()->routeIs('supplier'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a> 
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+            <a href="{{ route('produk.produk') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('produk.produk') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-box w-5"></i>
                     <span>Produk</span>
                 </div>
+                @if(request()->routeIs('produk.produk'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a>
             <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exchange-alt w-5"></i>
                     <span>Transaksi</span>
                 </div>
+                @if(request()->routeIs('transaksi'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a>
             <a href="#" 
                 class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">

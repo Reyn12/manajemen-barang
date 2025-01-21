@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Manajemen Barang')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -13,13 +14,24 @@
     <!-- Font Lato dari Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Custom Style -->
+    {{-- Apex Chart --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {{-- Alpine JS --}}
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {{-- Sweetalert 2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Custom Style --}}
     <style>
         body {
             font-family: 'Lato', sans-serif;
         }
+        [x-cloak] { 
+            display: none !important; 
+        }
     </style>
-
     @stack('styles')
 </head>
 <body class="bg-gray-50">
