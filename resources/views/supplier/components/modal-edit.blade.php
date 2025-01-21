@@ -14,7 +14,52 @@
         </div>
 
         <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form @submit.prevent="updateSupplier">
+            <form @submit.prevent="
+                fetch(`/supplier/${editingSupplier.id_supplier}`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nama: $el.nama.value,
+                        alamat: $el.alamat.value,
+                        telepon: $el.telepon.value,
+                        email: $el.email.value,
+                    })
+                }) 
+                .then(response => {
+                    console.log('Response:', response);
+                    return response.json();
+                })
+                .then(data => {
+                    if(data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Data supplier berhasil diupdate'
+                        });
+                        showEditModal = false;
+                        $dispatch('supplier-updated');
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: data.message || 'Terjadi kesalahan saat update data'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Terjadi kesalahan saat update data'
+                    });
+                })
+            " method="POST">
+                @csrf
+                @method('PUT')
                 <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                     <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Supplier</h3>
                     
@@ -26,22 +71,22 @@
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Nama Supplier</label>
-                            <input type="text" x-model="editingSupplier.nama_supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" name="nama" :value="editingSupplier.nama_supplier" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Alamat</label>
-                            <textarea x-model="editingSupplier.alamat" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                            <textarea name="alamat" :value="editingSupplier.alamat" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
                         </div>
-                        
+                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">No Telp</label>
-                            <input type="text" x-model="editingSupplier.no_telp" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" name="telepon" :value="editingSupplier.no_telp" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        
+                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" x-model="editingSupplier.email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="email" name="email" :value="editingSupplier.email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                     </div>
                 </div>
@@ -51,7 +96,7 @@
                         Update
                     </button>
                     <button type="button" @click="showEditModal = false" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Cancel
+                        Batal
                     </button>
                 </div>
             </form>

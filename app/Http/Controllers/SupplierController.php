@@ -76,9 +76,43 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            Log::info('Update supplier request:', [
+                'id' => $id,
+                'request' => $request->all()
+            ]);
+            
+            $supplier = Supplier::findOrFail($id);
+            
+            $updated = $supplier->update([
+                'nama_supplier' => $request->nama,
+                'alamat' => $request->alamat, 
+                'no_telp' => $request->telepon,
+                'email' => $request->email
+            ]);
+
+            if (!$updated) {
+                throw new \Exception('Gagal update data supplier');
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data supplier berhasil diupdate'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating supplier:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
