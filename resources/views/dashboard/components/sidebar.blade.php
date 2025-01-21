@@ -62,19 +62,25 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
             </a> 
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+            <a href="{{ route('produk.produk') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('produk.produk') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-box w-5"></i>
                     <span>Produk</span>
                 </div>
+                @if(request()->routeIs('produk.produk'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a>
             <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exchange-alt w-5"></i>
                     <span>Transaksi</span>
                 </div>
+                @if(request()->routeIs('transaksi'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a>
             <a href="#" 
                 class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">

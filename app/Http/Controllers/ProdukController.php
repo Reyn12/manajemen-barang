@@ -12,7 +12,8 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
+        $produk = Produk::with('supplier')->latest()->get();
+        return view('produk.produk', compact('produk'));
     }
 
     /**
