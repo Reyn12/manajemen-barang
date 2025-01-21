@@ -1,19 +1,35 @@
-<div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-between">
     <div class="flex items-center gap-4">
         <div class="relative">
             <button onclick="toggleFilterDropdown('timeDropdown')" class="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50">
                 <i class="far fa-calendar"></i>
-                <span>Last 6 Month</span>
+                <span>
+                    @switch(request('period', '6m'))
+                        @case('7d')
+                            Last 7 Days
+                            @break
+                        @case('30d')
+                            Last 30 Days
+                            @break
+                        @case('3m')
+                            Last 3 Month
+                            @break
+                        @case('1y')
+                            Last 1 Year
+                            @break
+                        @default
+                            Last 6 Month
+                    @endswitch
+                </span>
                 <i class="fas fa-chevron-down text-sm"></i>
             </button>
             <div id="timeDropdown" class="hidden absolute z-10 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 transform origin-top transition-all duration-200 opacity-0 scale-95">
                 <div class="">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 7 Days</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 30 Days</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 3 Month</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 bg-blue-50 text-blue-600">Last 6 Month</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 1 Year</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Custom Range</a>
+                    <a href="{{ route('dashboard', ['period' => '7d']) }}" class="block px-4 py-2 hover:bg-gray-100 {{ request('period') === '7d' ? 'bg-blue-50 text-blue-600' : '' }}">Last 7 Days</a>
+                    <a href="{{ route('dashboard', ['period' => '30d']) }}" class="block px-4 py-2 hover:bg-gray-100 {{ request('period') === '30d' ? 'bg-blue-50 text-blue-600' : '' }}">Last 30 Days</a>
+                    <a href="{{ route('dashboard', ['period' => '3m']) }}" class="block px-4 py-2 hover:bg-gray-100 {{ request('period') === '3m' ? 'bg-blue-50 text-blue-600' : '' }}">Last 3 Month</a>
+                    <a href="{{ route('dashboard', ['period' => '6m']) }}" class="block px-4 py-2 hover:bg-gray-100 {{ request('period', '6m') === '6m' ? 'bg-blue-50 text-blue-600' : '' }}">Last 6 Month</a>
+                    <a href="{{ route('dashboard', ['period' => '1y']) }}" class="block px-4 py-2 hover:bg-gray-100 {{ request('period') === '1y' ? 'bg-blue-50 text-blue-600' : '' }}">Last 1 Year</a>
                 </div>
             </div>
         </div>
@@ -86,7 +102,7 @@ function toggleFilterDropdown(dropdownId) {
     }
 }
 
-// Update click outside handler
+// Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.relative')) {
         const allDropdowns = document.querySelectorAll('[id$="Dropdown"]');

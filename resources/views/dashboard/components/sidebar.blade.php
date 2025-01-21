@@ -1,6 +1,6 @@
 <div class="bg-gray-100 w-64 fixed left-5 top-5 shadow-xl rounded-xl bottom-5 ">
     <div class="relative">
-        <div class="bg-white p-3 flex items-center gap-2 border-b m-2 rounded-xl mt-4">
+        <div class="bg-white p-3 flex items-center gap-2 border-b m-2 rounded-xl mt-6 mx-4">
             <div class="bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center">
                 <i class="fas fa-box text-white"></i>
             </div>
