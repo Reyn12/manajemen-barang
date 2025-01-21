@@ -22,11 +22,12 @@
             font-family: 'Lato', sans-serif;
         }
     </style>
-
+    @livewireStyles
     @stack('styles')
 </head>
 <body class="bg-gray-50">
     @yield('content')
     @stack('scripts')
+    @livewireScripts
 </body>
 </html>
