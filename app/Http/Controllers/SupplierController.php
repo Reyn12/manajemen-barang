@@ -118,8 +118,20 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)  // Ubah parameter dari (Supplier $supplier)
     {
-        //
+        $supplier = Supplier::find($id);
+        if($supplier) {
+            $supplier->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil dihapus'
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Supplier tidak ditemukan'
+        ], 404);
     }
 }

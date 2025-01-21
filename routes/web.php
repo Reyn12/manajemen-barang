@@ -11,3 +11,4 @@ Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
 // Tambah route update
 Route::put('/supplier/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+Route::delete('/supplier/{id}', [SupplierController::class, 'destroy'])->name('supplier.destroy');

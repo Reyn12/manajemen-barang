@@ -8,7 +8,7 @@
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Alamat</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No Telp</th>
                     <th class="w-64 px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                    <th class=" px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created At</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created At</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
                 </tr>
             </thead>
@@ -39,12 +39,47 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-3">
-                                <button @click="editingSupplier = {...supplier}; showEditModal = true" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200">
+                                <button @click="editingSupplier = {...supplier}; showEditModal = true" 
+                                    class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form @submit.prevent="
+                                    Swal.fire({
+                                        title: 'Yakin nih mau hapus?',
+                                        text: 'Data supplier akan dihapus permanen!',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#EF4444',
+                                        cancelButtonColor: '#6B7280',
+                                        confirmButtonText: 'Ya, hapus!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            fetch(`/supplier/${supplier.id_supplier}`, {
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                                                }
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data.success) {
+                                                    suppliers = suppliers.filter(s => s.id_supplier != supplier.id_supplier);
+                                                    Swal.fire(
+                                                        'Terhapus!',
+                                                        'Supplier berhasil dihapus.',
+                                                        'success'
+                                                    );
+                                                }
+                                            });
+                                        }
+                                    })" 
+                                class="inline">
+                                    <button type="submit" 
+                                        class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
