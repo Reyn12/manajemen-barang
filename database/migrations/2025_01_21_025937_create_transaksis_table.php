@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id('id_transaksi');
             $table->foreignId('id_produk')->constrained('produks', 'id_produk')->onDelete('cascade');
-            $table->foreignId('id_supplier')->constrained('suppliers', 'id_supplier')->onDelete('cascade');
+            $table->date('tgl_jual');
             $table->integer('jumlah');
+            $table->enum('status_bayar', ['Pending', 'Sukses', 'Gagal']);
             $table->decimal('total_harga', 12, 2);
             $table->timestamps();
         });
