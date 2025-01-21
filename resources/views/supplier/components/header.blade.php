@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between mb-8">
     <div>
-        <h1 class="text-2xl font-semibold">Dashboard</h1>
-        <p class="text-sm text-gray-500">Dashboard Analis</p>
+        <h1 class="text-2xl font-semibold">Supplier</h1>
+        <p class="text-sm text-gray-500">Supplier Data</p>
     </div>
     <div class="flex items-center gap-4">
         <button class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">

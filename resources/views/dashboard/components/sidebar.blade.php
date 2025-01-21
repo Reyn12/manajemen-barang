@@ -47,17 +47,20 @@
                 <div class="flex items-center gap-2">
                     <i class="fas fa-asterisk w-5"></i>
                     <span>Dashboard</span>
-                </div>
+                </div> 
                 @if(request()->routeIs('dashboard'))
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
-            </a>
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
+            </a> 
+            <a href="{{ route('supplier') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('supplier') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-user w-5"></i>
                     <span>Supplier</span>
                 </div>
+                @if(request()->routeIs('supplier'))
+                    <i class="fas fa-chevron-right text-sm"></i>
+                @endif
             </a> 
             <a href="#" 
                 class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">

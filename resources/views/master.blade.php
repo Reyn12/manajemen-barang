@@ -16,18 +16,25 @@
     {{-- Apex Chart --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    {{-- Alpine JS --}}
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {{-- Sweetalert 2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {{-- Custom Style --}}
     <style>
         body {
             font-family: 'Lato', sans-serif;
         }
+        [x-cloak] { 
+            display: none !important; 
+        }
     </style>
-    @livewireStyles
     @stack('styles')
 </head>
 <body class="bg-gray-50">
     @yield('content')
     @stack('scripts')
-    @livewireScripts
 </body>
 </html>
