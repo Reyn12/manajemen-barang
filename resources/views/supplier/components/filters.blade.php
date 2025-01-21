@@ -5,11 +5,14 @@
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <i class="fas fa-search text-gray-400"></i>
             </span>
-            <input type="text" 
-                placeholder="Cari berdasar nama/email..." 
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search..."
+                x-model="search"
                 class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             >
-        </div>
+        </div> 
 
         <!-- Filter Dropdown -->
         <div class="relative">
@@ -19,9 +22,9 @@
             </button>
         </div>
     </div>
- 
+
     <!-- Tombol Tambah -->
-    <div x-data> <!-- Tambahkan x-data di parent -->
+    <div x-data>
         <button 
             @click="$dispatch('open-modal')"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
