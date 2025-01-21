@@ -109,7 +109,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 12000000,
                 'stok' => 10,
                 'spesifikasi' => 'RAM 4GB, Storage 128GB, Warna Midnight',
-                'foto_produk' => 'iphone13.jpg',
+                'foto_produk' => 'images/products/iphone13.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -120,7 +120,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 15000000,
                 'stok' => 5,
                 'spesifikasi' => 'RAM 16GB, SSD 512GB, RTX 3060',
-                'foto_produk' => 'asus-rog.jpg',
+                'foto_produk' => 'images/products/asus-rog.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 13500000,
                 'stok' => 8,
                 'spesifikasi' => 'RAM 8GB, Storage 256GB, Warna Phantom Black',
-                'foto_produk' => 'samsung-s22.jpg',
+                'foto_produk' => 'images/products/samsung-s22.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 18900000,
                 'stok' => 3,
                 'spesifikasi' => 'RAM 16GB, SSD 512GB, Apple M2 Chip',
-                'foto_produk' => 'macbook-m2.jpg',
+                'foto_produk' => 'images/products/macbook-m2.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -153,7 +153,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 8500000,
                 'stok' => 6,
                 'spesifikasi' => 'Storage 825GB SSD, Digital Edition, Warna Putih',
-                'foto_produk' => 'ps5.jpg',
+                'foto_produk' => 'images/products/ps5.jpg', 
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -164,7 +164,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 14500000,
                 'stok' => 7,
                 'spesifikasi' => '12.9 inch, RAM 8GB, Storage 256GB, M2 Chip',
-                'foto_produk' => 'ipad-pro.jpg',
+                'foto_produk' => 'images/products/ipad-pro.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -175,7 +175,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 16800000,
                 'stok' => 4,
                 'spesifikasi' => 'Intel i7 Gen 12, RAM 16GB, SSD 1TB',
-                'foto_produk' => 'dell-xps.jpg',
+                'foto_produk' => 'images/products/dell-xps.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -186,7 +186,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 4800000,
                 'stok' => 12,
                 'spesifikasi' => '7 inch OLED, Storage 64GB, Warna Putih',
-                'foto_produk' => 'switch-oled.jpg',
+                'foto_produk' => 'images/products/switch-oled.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -197,7 +197,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 9900000,
                 'stok' => 15,
                 'spesifikasi' => 'RAM 12GB, Storage 256GB, Snapdragon 8 Gen 2',
-                'foto_produk' => 'xiaomi-13pro.jpg',
+                'foto_produk' => 'images/products/xiaomi-13pro.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -208,7 +208,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 21500000,
                 'stok' => 4,
                 'spesifikasi' => '13 inch, Intel i7, RAM 32GB, SSD 512GB',
-                'foto_produk' => 'surface-pro9-i7.jpg',
+                'foto_produk' => 'images/products/surface-pro9-i7.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -219,7 +219,7 @@ class DatabaseSeeder extends Seeder
                 'harga' => 15900000,
                 'stok' => 8,
                 'spesifikasi' => '15 inch, Intel i5, RAM 16GB, SSD 256GB',
-                'foto_produk' => 'surface-laptop5.jpg',
+                'foto_produk' => 'images/products/surface-laptop5.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ]

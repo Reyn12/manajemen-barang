@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use App\Models\Supplier;
+
 
 class ProdukController extends Controller
 {
@@ -43,9 +45,11 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produk $produk)
+    public function edit($id) // Ubah dari (Produk $produk) jadi ($id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+        $suppliers = Supplier::all();
+        return view('produk.edit', compact('produk', 'suppliers'));
     }
 
     /**
