@@ -18,10 +18,44 @@ class ProdukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Produk::with('supplier');
+    
+        // Filter berdasarkan pencarian
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_produk', 'like', "%{$search}%")
+                  ->orWhere('kategori', 'like', "%{$search}%")
+                  ->orWhere('spesifikasi', 'like', "%{$search}%")
+                  ->orWhereHas('supplier', function($q) use ($search) {
+                      $q->where('nama_supplier', 'like', "%{$search}%");
+                  });
+            });
+        }
+    
+        // Filter berdasarkan kategori
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('kategori', $request->kategori);
+        }
+    
+        // Filter berdasarkan supplier
+        if ($request->has('supplier') && $request->supplier != '') {
+            $query->where('id_supplier', $request->supplier);
+        }
+    
+        // Filter berdasarkan range harga
+        if ($request->has('min_harga') && $request->min_harga != '') {
+            $query->where('harga', '>=', $request->min_harga);
+        }
+        if ($request->has('max_harga') && $request->max_harga != '') {
+            $query->where('harga', '<=', $request->max_harga);
+        }
+    
+        $produk = $query->latest()->paginate(10); // Menggunakan paginate untuk pagination
         $suppliers = Supplier::all();
-        $produk = Produk::with('supplier')->get();  // tambahkan ini kembali
+    
         return view('produk.produk', compact('suppliers', 'produk'));
     }
 
@@ -93,10 +127,10 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)  // Ganti parameter Produk $produk menjadi $id
+    public function update(Request $request, $id)
     {
         try {
-            $produk = Produk::findOrFail($id);  // Tambah ini untuk explicit query
+            $produk = Produk::findOrFail($id);
             
             Log::info('Update Request Data:', $request->all());
             Log::info('Current Produk Data:', $produk->toArray());
@@ -119,6 +153,23 @@ class ProdukController extends Controller
                 'stok' => $request->stok,
                 'spesifikasi' => $request->spesifikasi
             ];
+    
+            // Handle foto produk jika ada
+            if ($request->hasFile('foto_produk')) {
+                // Hapus foto lama jika ada
+                if ($produk->foto_produk) {
+                    $oldPath = public_path('images/products/' . $produk->foto_produk);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                }
+    
+                // Upload foto baru
+                $file = $request->file('foto_produk');
+                $filename = time() . '-' . $file->getClientOriginalName();
+                $file->move(public_path('images/products'), $filename);
+                $data['foto_produk'] = $filename;
+            }
         
             Log::info('Data to update:', $data);
             
@@ -155,9 +206,28 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk)
+    public function destroy($id)
     {
-        //
+        try {
+            $produk = Produk::findOrFail($id);
+            
+            // Hapus foto jika ada
+            if($produk->foto_produk) {
+                Storage::disk('public')->delete($produk->foto_produk);
+            }
+            
+            $produk->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus produk: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function downloadPDF()

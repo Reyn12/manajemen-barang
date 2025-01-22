@@ -24,8 +24,9 @@
             <tr>
                 <th>No</th>
                 <th>Nama Supplier</th>
-                <th>No Telp</th>
                 <th>Alamat</th>
+                <th>No Telp</th>
+                <th>Email</th>
             </tr>
         </thead>
         <tbody>
@@ -33,8 +34,9 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $supplier->nama_supplier }}</td>
-                <td>{{ $supplier->no_telp }}</td>
                 <td>{{ $supplier->alamat }}</td>
+                <td>{{ $supplier->no_telp }}</td>
+                <td>{{ $supplier->email }}</td>
             </tr>
             @endforeach
         </tbody>
