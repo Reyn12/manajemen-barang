@@ -25,21 +25,22 @@
                                 {{ $transaksi->status_bayar }}
                             </span>
                         </td>
-                        <td class="px-4 py-3">
-                            <div class="flex gap-2">
-                                <a href="{{ route('transaksi.edit', $transaksi->id_transaksi) }}" 
-                                   class="text-blue-500 hover:text-blue-700">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('transaksi.destroy', $transaksi->id_transaksi) }}" method="POST" 
-                                      class="inline-block" onsubmit="return confirm('Yakin mau hapus data ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                            {{-- Edit Button --}}
+                            <button data-modal-target="editModal{{ $transaksi->id_transaksi }}" 
+                                    data-modal-toggle="editModal{{ $transaksi->id_transaksi }}"
+                                    class="text-blue-600 hover:text-blue-900">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        
+                            {{-- Delete Button --}}
+                            <!-- Ganti bagian form delete dengan button saja -->
+                            <button onclick="confirmDelete({{ $transaksi->id_transaksi }})" type="button" class="text-red-600 hover:text-red-900">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        
+                            {{-- Include Modal --}}
+                            @include('transaksi.components.edit-modal', ['transaksi' => $transaksi, 'produks' => $produks])
                         </td>
                     </tr>
                 @empty
@@ -51,6 +52,107 @@
         </table>
     </div>
     <div class="px-4 py-3">
-        {{ $transaksis->links() }}
+        @if ($transaksis->hasPages())
+            <nav class="flex items-center justify-between">
+                {{-- Previous Page Link --}}
+                <div class="flex-1 flex justify-start">
+                    @if ($transaksis->onFirstPage())
+                        <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-md">
+                            Previous
+                        </span>
+                    @else
+                        <a href="{{ $transaksis->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:text-gray-500">
+                            Previous
+                        </a>
+                    @endif
+                </div>
+    
+                {{-- Pagination Elements --}}
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
+                    <div>
+                        <span class="relative z-0 inline-flex shadow-sm rounded-md gap-4">
+                            {{-- Array Of Links --}}
+                            @foreach ($transaksis->getUrlRange(1, $transaksis->lastPage()) as $page => $url)
+                                @if ($page == $transaksis->currentPage())
+                                    <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-blue-600 bg-blue-50 border border-blue-500 rounded-md">
+                                        {{ $page }}
+                                    </span>
+                                @else
+                                    <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-md">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </span>
+                    </div>
+                </div>
+    
+                {{-- Next Page Link --}}
+                <div class="flex-1 flex justify-end">
+                    @if ($transaksis->hasMorePages())
+                        <a href="{{ $transaksis->nextPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:text-gray-500">
+                            Next
+                        </a>
+                    @else
+                        <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-md">
+                            Next
+                        </span>
+                    @endif
+                </div>
+            </nav>
+        @endif
     </div>
 </div>
+@push('scripts')
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Data transaksi akan dihapus permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim request delete
+                fetch(`/transaksi/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        Swal.fire(
+                            'Terhapus!',
+                            'Data transaksi berhasil dihapus.',
+                            'success'
+                        ).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Gagal!',
+                            'Terjadi kesalahan saat menghapus data.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan pada server.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+</script>
+@endpush

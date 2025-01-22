@@ -72,22 +72,15 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
             </a>
-            <a href="{{ route('transaksi') }}" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
+            <a href="{{ route('transaksi.index') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi.index') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exchange-alt w-5"></i>
                     <span>Transaksi</span>
                 </div>
-                @if(request()->routeIs('transaksi'))
+                @if(request()->routeIs('transaksi.index'))
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
-            </a>
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-chart-bar w-5"></i>
-                    <span>Laporan</span>
-                </div>
             </a>
         </div>
     </nav>
