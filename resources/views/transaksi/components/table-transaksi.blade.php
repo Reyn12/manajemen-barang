@@ -3,7 +3,7 @@
         <table class="w-full text-sm text-left">
             <thead class="text-gray-700 bg-gray-100">
                 <tr>
-                    <th class="px-4 py-3">No</th>
+                    <th class="px-4 py-3">Kode Transaksi</th>
                     <th class="px-4 py-3">Tanggal Jual</th>
                     <th class="px-4 py-3">Produk</th>
                     <th class="px-4 py-3">Jumlah</th>
@@ -15,7 +15,7 @@
             <tbody class="divide-y">
                 @forelse ($transaksis as $transaksi)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-3">{{ $transaksi->kode_transaksi }}</td>
                         <td class="px-4 py-3">{{ date('d/m/Y', strtotime($transaksi->tgl_jual)) }}</td>
                         <td class="px-4 py-3">{{ $transaksi->produk->nama_produk }}</td>
                         <td class="px-4 py-3">{{ $transaksi->jumlah }}</td>
@@ -25,18 +25,19 @@
                                 {{ $transaksi->status_bayar }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                             {{-- Edit Button --}}
                             <button data-modal-target="editModal{{ $transaksi->id_transaksi }}" 
                                     data-modal-toggle="editModal{{ $transaksi->id_transaksi }}"
-                                    class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-edit"></i>
+                                    class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200">
+                                <i class="fas fa-edit text-lg"></i>
                             </button>
                         
                             {{-- Delete Button --}}
-                            <!-- Ganti bagian form delete dengan button saja -->
-                            <button onclick="confirmDelete({{ $transaksi->id_transaksi }})" type="button" class="text-red-600 hover:text-red-900">
-                                <i class="fas fa-trash"></i>
+                            <button onclick="confirmDelete({{ $transaksi->id_transaksi }})" 
+                                    type="button" 
+                                    class=" p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200 mr-6">
+                                <i class="fas fa-trash text-lg"></i>
                             </button>
                         
                             {{-- Include Modal --}}

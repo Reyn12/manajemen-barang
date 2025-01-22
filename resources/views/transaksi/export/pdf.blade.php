@@ -23,7 +23,7 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>ID Transaksi</th>
+                <th>Kode Transaksi</th>
                 <th>Tanggal Jual</th>
                 <th>Produk</th>
                 <th>Jumlah</th>
@@ -35,7 +35,7 @@
             @foreach($transaksis as $index => $transaksi)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $transaksi->id_transaksi }}</td>
+                <td>{{ $transaksi->kode_transaksi }}</td>
                 <td>{{ $transaksi->tgl_jual }}</td>
                 <td>{{ $transaksi->produk->nama_produk }}</td>
                 <td>{{ $transaksi->jumlah }}</td>
