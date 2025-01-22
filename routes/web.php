@@ -30,3 +30,4 @@ Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaks
 Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
 Route::put('/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
 Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+Route::get('/transaksi/export', [TransaksiController::class, 'export'])->name('transaksi.export');
