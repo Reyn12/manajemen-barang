@@ -6,6 +6,8 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 
 class ProdukController extends Controller
@@ -88,9 +90,63 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, $id)  // Ganti parameter Produk $produk menjadi $id
     {
-        //
+        try {
+            $produk = Produk::findOrFail($id);  // Tambah ini untuk explicit query
+            
+            Log::info('Update Request Data:', $request->all());
+            Log::info('Current Produk Data:', $produk->toArray());
+        
+            $request->validate([
+                'nama_produk' => 'required',
+                'kategori' => 'required',
+                'id_supplier' => 'required',
+                'harga' => 'required|numeric|min:0',
+                'stok' => 'required|numeric|min:0',
+                'spesifikasi' => 'nullable',
+                'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            ]);
+        
+            $data = [
+                'nama_produk' => $request->nama_produk,
+                'kategori' => $request->kategori,
+                'id_supplier' => $request->id_supplier,
+                'harga' => $request->harga,
+                'stok' => $request->stok,
+                'spesifikasi' => $request->spesifikasi
+            ];
+        
+            Log::info('Data to update:', $data);
+            
+            DB::enableQueryLog();
+            $updated = $produk->update($data);
+            Log::info('SQL Query:', DB::getQueryLog());
+            Log::info('Update result:', ['success' => $updated]);
+            Log::info('Updated Produk Data:', $produk->fresh()->toArray());
+        
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Produk berhasil diperbarui'
+                ]);
+            }
+    
+            return redirect()->route('produk.produk')->with('success', 'Produk berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Update error:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal memperbarui produk: ' . $e->getMessage()
+                ], 422);
+            }
+            
+            return back()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+        }
     }
 
     /**

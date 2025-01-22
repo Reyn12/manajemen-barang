@@ -11,7 +11,46 @@
                 <h1 class="text-2xl font-bold text-gray-800">Edit Produk</h1>
             </div>
 
-            <form action="{{ route('produk.update', $produk->id_produk) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('produk.update', $produk->id_produk) }}" method="POST" enctype="multipart/form-data"
+                @submit.prevent="
+                    fetch($el.action, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                        },
+                        body: new FormData($el)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log('Response:', result); // Tambah ini
+                        if(result.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                window.location.href = '{{ route('produk.produk') }}';
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Terjadi kesalahan saat memperbarui produk'
+                        });
+                    })
+                "
+            >
                 @csrf
                 @method('PUT')
                 

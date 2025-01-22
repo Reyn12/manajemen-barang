@@ -72,7 +72,7 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
             </a>
-            <a href="#" 
+            <a href="{{ route('transaksi') }}" 
                 class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exchange-alt w-5"></i>
