@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_produk');
             $table->foreignId('id_supplier')->constrained('suppliers', 'id_supplier')->onDelete('cascade');
             $table->string('nama_produk');
-            $table->enum('kategori', ['HP', 'Laptop', 'Tablet', 'Aksesoris']);
+            $table->enum('kategori', ['HP', 'Laptop', 'Tablet', 'Aksesoris', 'Konsol Game']);
             $table->decimal('harga', 12, 2);
             $table->integer('stok');
             $table->text('spesifikasi');

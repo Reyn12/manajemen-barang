@@ -8,4 +8,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        cors: true,  // Tambah ini lagi
+        hmr: {
+            host: '127.0.0.1',
+        },
+        watch: {
+            usePolling: true,
+        },
+        host: '127.0.0.1',
+    },
 });

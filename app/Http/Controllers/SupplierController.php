@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SupplierExport;
 
 class SupplierController extends Controller
 {
@@ -12,7 +16,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $suppliers = Supplier::latest()->get();
+        return view('supplier.supplier', compact('suppliers'));
     }
 
     /**
@@ -28,7 +33,31 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'nama_supplier' => 'required',
+                'alamat' => 'required',
+                'no_telp' => 'required',
+                'email' => 'required|email'
+            ]);
+        
+            $supplier = Supplier::create($validated);
+        
+            if(!$supplier) {
+                throw new \Exception('Gagal menyimpan data supplier');
+            }
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil ditambahkan'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error creating supplier: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan supplier: ' . $e->getMessage()
+            ], 422);
+        }
     }
 
     /**
@@ -50,16 +79,74 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            Log::info('Update supplier request:', [
+                'id' => $id,
+                'request' => $request->all()
+            ]);
+            
+            $supplier = Supplier::findOrFail($id);
+            
+            $updated = $supplier->update([
+                'nama_supplier' => $request->nama,
+                'alamat' => $request->alamat, 
+                'no_telp' => $request->telepon,
+                'email' => $request->email
+            ]);
+
+            if (!$updated) {
+                throw new \Exception('Gagal update data supplier');
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data supplier berhasil diupdate'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating supplier:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)  // Ubah parameter dari (Supplier $supplier)
     {
-        //
+        $supplier = Supplier::find($id);
+        if($supplier) {
+            $supplier->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil dihapus'
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Supplier tidak ditemukan'
+        ], 404);
+    }
+
+    public function downloadPDF()
+    {
+        $suppliers = Supplier::all();
+        $pdf = Pdf::loadView('supplier.export.pdf', compact('suppliers'));
+        return $pdf->download('supplier.pdf');
+    }
+
+    public function downloadExcel()
+    {
+        return Excel::download(new SupplierExport, 'supplier.xlsx');
     }
 }
