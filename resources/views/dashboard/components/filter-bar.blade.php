@@ -163,7 +163,19 @@ function refreshPage(button) {
 }
 
 function showCustomizeAlert() {
-    alert('Customize feature coming soon!');
+    Swal.fire({
+        title: 'Coming Soon!',
+        text: 'Customize feature will be available soon',
+        icon: 'info',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    });
 }
 
 function downloadBoth(type) {
