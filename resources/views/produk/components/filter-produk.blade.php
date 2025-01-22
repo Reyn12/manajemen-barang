@@ -1,12 +1,18 @@
 <div class="flex items-center justify-between mb-6">
     <div class="flex items-center gap-4 flex-1">
         <!-- Search Bar -->
-        <div class="relative flex-1 max-w-md">
+        <form action="{{ route('produk.produk') }}" method="GET" class="relative flex-1 max-w-md">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <i class="fas fa-search text-gray-400"></i>
             </span>
-            <input type="text" class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Cari produk...">
-        </div>
+            <input 
+                type="text" 
+                name="search"
+                value="{{ request('search') }}"
+                class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
+                placeholder="Cari produk..."
+            >
+        </form>
 
         <!-- Filter Dropdown -->
         <div class="relative" x-data="{ open: false }">
@@ -15,32 +21,63 @@
                 <span>Filter</span>
                 <i class="fas fa-chevron-down text-sm"></i>
             </button>
-            <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                <div class="p-2">
-                    <label class="block text-sm text-gray-700 mb-2">Kategori</label>
-                    <select class="w-full border border-gray-300 rounded-md p-1.5 text-sm">
-                        <option value="">Semua</option>
-                        <option value="hp">HP</option>
-                        <option value="laptop">Laptop</option>
-                        <option value="tablet">Tablet</option>
-                        <option value="aksesoris">Aksesoris</option>
-                    </select>
-                </div>
-                <div class="p-2 border-t">
-                    <label class="block text-sm text-gray-700 mb-2">Supplier</label>
-                    <select class="w-full border border-gray-300 rounded-md p-1.5 text-sm">
-                        <option value="">Semua</option>
-                        @foreach($suppliers as $supplier)
-                            <option value="{{ $supplier->id_supplier }}">{{ $supplier->nama_supplier }}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <form action="{{ route('produk.produk') }}" method="GET">
+                    <!-- Preserve search parameter if exists -->
+                    @if(request('search'))
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                    @endif
+
+                    <div class="p-3">
+                        <label class="block text-sm text-gray-700 mb-2">Kategori</label>
+                        <select name="kategori" class="w-full border border-gray-300 rounded-md p-1.5 text-sm">
+                            <option value="">Semua</option>
+                            <option value="hp" {{ request('kategori') == 'hp' ? 'selected' : '' }}>HP</option>
+                            <option value="laptop" {{ request('kategori') == 'laptop' ? 'selected' : '' }}>Laptop</option>
+                            <option value="tablet" {{ request('kategori') == 'tablet' ? 'selected' : '' }}>Tablet</option>
+                            <option value="aksesoris" {{ request('kategori') == 'aksesoris' ? 'selected' : '' }}>Aksesoris</option>
+                        </select>
+                    </div>
+
+                    <div class="p-3 border-t">
+                        <label class="block text-sm text-gray-700 mb-2">Supplier</label>
+                        <select name="supplier" class="w-full border border-gray-300 rounded-md p-1.5 text-sm">
+                            <option value="">Semua</option>
+                            @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->id_supplier }}" {{ request('supplier') == $supplier->id_supplier ? 'selected' : '' }}>
+                                    {{ $supplier->nama_supplier }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="p-3 border-t">
+                        <label class="block text-sm text-gray-700 mb-2">Range Harga</label>
+                        <div class="space-y-2">
+                            <input type="number" name="min_harga" value="{{ request('min_harga') }}" 
+                                class="w-full border border-gray-300 rounded-md p-1.5 text-sm" 
+                                placeholder="Harga Minimal">
+                            <input type="number" name="max_harga" value="{{ request('max_harga') }}" 
+                                class="w-full border border-gray-300 rounded-md p-1.5 text-sm" 
+                                placeholder="Harga Maksimal">
+                        </div>
+                    </div>
+
+                    <div class="p-3 border-t flex justify-between">
+                        <a href="{{ route('produk.produk') }}" class="text-sm text-gray-600 hover:text-gray-800">
+                            Reset
+                        </a>
+                        <button type="submit" class="px-4 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                            Terapkan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    
-     <!-- Tombol Download -->
-     <div x-data="{
+
+    <!-- Tombol Download tetap sama -->
+    <div x-data="{
         showDownloadModal: false,
         downloadPDF() {
             window.location.href = '/produk/download/pdf';
@@ -59,7 +96,7 @@
         @include('produk.components.modal-download')
     </div>
 
-    <!-- Tombol Tambah -->
+    <!-- Tombol Tambah tetap sama -->
     <div x-data>
         <button 
             @click="$dispatch('open-modal')"

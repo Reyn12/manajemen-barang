@@ -6,8 +6,13 @@ use App\Models\Produk;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class ProdukExport implements FromCollection, WithHeadings, WithMapping
+class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
     public function collection()
     {
@@ -18,11 +23,13 @@ class ProdukExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'No',
-            'Kode',
             'Nama Produk',
-            'Supplier',
+            'Kategori',
             'Harga',
-            'Stok'
+            'Stok',
+            'Spesifikasi',
+            'Supplier',
+            'Foto Produk'
         ];
     }
 
@@ -33,11 +40,56 @@ class ProdukExport implements FromCollection, WithHeadings, WithMapping
         
         return [
             $no,
-            $produk->kode,
             $produk->nama_produk,
+            $produk->kategori,
+            'Rp ' . number_format($produk->harga, 0, ',', '.'),
+            $produk->stok . ' unit',
+            $produk->spesifikasi,
             $produk->supplier->nama_supplier,
-            $produk->harga,
-            $produk->stok
+            $produk->foto_produk
+        ];
+    }
+
+    public function styles(Worksheet $sheet): array
+    {
+        return [
+            // Style untuk header
+            1 => [
+                'font' => ['bold' => true],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    'vertical' => Alignment::VERTICAL_CENTER
+                ]
+            ],
+            // Style untuk header background
+            'A1:H1' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => '4A90E2']
+                ],
+                'font' => ['color' => ['rgb' => 'FFFFFF']]
+            ],
+            // Style untuk seluruh data
+            'A2:H'.$sheet->getHighestRow() => [
+                'alignment' => ['vertical' => Alignment::VERTICAL_CENTER],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+            ],
+            // Style khusus untuk kolom nomor
+            'A2:A'.$sheet->getHighestRow() => [
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+            ],
+            // Style khusus untuk kolom harga
+            'D2:D'.$sheet->getHighestRow() => [
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_RIGHT],
+            ],
+            // Style khusus untuk kolom stok
+            'E2:E'.$sheet->getHighestRow() => [
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+            ],
         ];
     }
 }

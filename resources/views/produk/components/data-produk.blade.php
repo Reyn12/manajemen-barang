@@ -41,17 +41,65 @@
                     class="flex-1 px-3 py-2 text-center text-sm font-medium bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
                     Edit
                 </a>
-                <form action="{{ route('produk.destroy', $item->id_produk) }}" method="POST" class="flex-1">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" 
-                        class="w-full px-3 py-2 text-sm font-medium bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
-                        onclick="return confirm('Yakin hapus produk ini?')">
-                        Hapus
-                    </button>
-                </form>
+                <button onclick="confirmDelete({{ $item->id_produk }})" 
+                    class="flex-1 px-3 py-2 text-sm font-medium bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                    Hapus
+                </button>
             </div>
         </div>
     </div>
     @endforeach
 </div>
+
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Apakah anda yakin?',
+        text: 'Produk ini akan dihapus secara permanen!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`{{ route('produk.destroy', '') }}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: result.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Terjadi kesalahan! Silakan coba lagi.'
+                });
+            });
+        }
+    });
+}
+</script>
