@@ -22,7 +22,10 @@ class TransaksiExport implements FromCollection, WithHeadings, WithMapping, Shou
     {
         return [
             'ID Transaksi',
+            'Kode Transaksi',
             'ID Produk',
+            'Nama Produk',
+            'Nama Supplier',
             'Tanggal Jual',
             'Jumlah',
             'Total Harga',
@@ -36,7 +39,10 @@ class TransaksiExport implements FromCollection, WithHeadings, WithMapping, Shou
     {
         return [
             $transaksi->id_transaksi,
+            $transaksi->kode_transaksi,
             $transaksi->id_produk,
+            $transaksi->produk->nama_produk,
+            $transaksi->produk->supplier->nama_supplier,
             $transaksi->tgl_jual,
             $transaksi->jumlah,
             'Rp ' . number_format($transaksi->total_harga, 0, ',', '.'),

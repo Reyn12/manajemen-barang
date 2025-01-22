@@ -59,10 +59,13 @@ class TransaksiController extends Controller
             'tgl_jual' => 'required|date',
             'jumlah' => 'required|integer|min:1',
             'total_harga' => 'required|numeric|min:0',
-            'status_bayar' => 'required|in:Pending,Sukses,Gagal', // sesuaikan dengan enum di database
+            'status_bayar' => 'required|in:Pending,Sukses,Gagal',
         ]);
     
         try {
+            // Generate kode transaksi
+            $validated['kode_transaksi'] = Transaksi::generateKodeTransaksi();
+            
             // Simpan transaksi
             Transaksi::create($validated);
     

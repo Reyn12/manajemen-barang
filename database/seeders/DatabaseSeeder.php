@@ -228,6 +228,7 @@ class DatabaseSeeder extends Seeder
         // Data Transaksi
         DB::table('transaksis')->insert([
             [
+                'kode_transaksi' => 'TRX-0001',
                 'id_produk' => 1,
                 'tgl_jual' => '2025-01-21',
                 'jumlah' => 2,
@@ -237,6 +238,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0002',
                 'id_produk' => 2,
                 'tgl_jual' => '2025-01-21', 
                 'jumlah' => 1,
@@ -246,6 +248,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0003',
                 'id_produk' => 3,
                 'tgl_jual' => '2025-01-15',
                 'jumlah' => 1,
@@ -255,6 +258,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0004',
                 'id_produk' => 4,
                 'tgl_jual' => '2024-12-28',
                 'jumlah' => 2,
@@ -264,6 +268,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0005',
                 'id_produk' => 5,
                 'tgl_jual' => '2024-12-25',
                 'jumlah' => 3,
@@ -273,6 +278,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0006',
                 'id_produk' => 6,
                 'tgl_jual' => '2024-12-10',
                 'jumlah' => 1,
@@ -282,6 +288,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0007',
                 'id_produk' => 7,
                 'tgl_jual' => '2024-11-30',
                 'jumlah' => 2,
@@ -291,6 +298,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0008',
                 'id_produk' => 8,
                 'tgl_jual' => '2024-11-15',
                 'jumlah' => 4,
@@ -300,6 +308,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0009',
                 'id_produk' => 9,
                 'tgl_jual' => '2024-10-28',
                 'jumlah' => 2,
@@ -309,6 +318,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0010',
                 'id_produk' => 10,
                 'tgl_jual' => '2024-10-15',
                 'jumlah' => 1,
@@ -318,6 +328,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0011',
                 'id_produk' => 1,
                 'tgl_jual' => '2024-09-30',
                 'jumlah' => 3,
@@ -327,6 +338,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0012',
                 'id_produk' => 3,
                 'tgl_jual' => '2024-09-15',
                 'jumlah' => 2,
@@ -336,6 +348,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0013',
                 'id_produk' => 5,
                 'tgl_jual' => '2024-08-30',
                 'jumlah' => 2,
@@ -345,6 +358,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0014',
                 'id_produk' => 7,
                 'tgl_jual' => '2024-08-15',
                 'jumlah' => 1,
@@ -354,6 +368,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'kode_transaksi' => 'TRX-0015',
                 'id_produk' => 9,
                 'tgl_jual' => '2024-08-01',
                 'jumlah' => 3,
