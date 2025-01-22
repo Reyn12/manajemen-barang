@@ -23,6 +23,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>ID Transaksi</th>
                 <th>Tanggal Jual</th>
                 <th>Produk</th>
                 <th>Jumlah</th>
@@ -34,10 +35,11 @@
             @foreach($transaksis as $index => $transaksi)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $transaksi->tanggal }}</td>
+                <td>{{ $transaksi->id_transaksi }}</td>
+                <td>{{ $transaksi->tgl_jual }}</td>
                 <td>{{ $transaksi->produk->nama_produk }}</td>
                 <td>{{ $transaksi->jumlah }}</td>
-                <td>Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
+                <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                 <td>{{ $transaksi->status_bayar }}</td>
             </tr>
             @endforeach

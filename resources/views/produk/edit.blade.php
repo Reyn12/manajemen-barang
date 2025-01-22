@@ -12,23 +12,19 @@
             </div>
 
             <form action="{{ route('produk.update', $produk->id_produk) }}" method="POST" enctype="multipart/form-data"
+                x-data=""
                 @submit.prevent="
+                    const formData = new FormData($el);
                     fetch($el.action, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
                         },
-                        body: new FormData($el)
+                        body: formData
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(result => {
-                        console.log('Response:', result); // Tambah ini
                         if(result.success) {
                             Swal.fire({
                                 icon: 'success',
@@ -39,6 +35,8 @@
                             }).then(() => {
                                 window.location.href = '{{ route('produk.produk') }}';
                             });
+                        } else {
+                            throw new Error(result.message || 'Terjadi kesalahan');
                         }
                     })
                     .catch(error => {
@@ -46,9 +44,9 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Terjadi kesalahan saat memperbarui produk'
+                            text: error.message || 'Terjadi kesalahan saat memperbarui produk'
                         });
-                    })
+                    });
                 "
             >
                 @csrf
