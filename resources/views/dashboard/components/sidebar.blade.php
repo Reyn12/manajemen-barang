@@ -1,4 +1,4 @@
-<div class="bg-gray-100 w-64 fixed left-5 top-5 shadow-xl rounded-xl bottom-5 ">
+<div class="bg-[#f2f3f5] w-64 fixed left-5 top-5 shadow-xl rounded-xl bottom-5 ">
     <div class="relative">
         <div class="bg-white p-3 flex items-center gap-2 border-b m-2 rounded-xl mt-6 mx-4">
             <div class="bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center">
@@ -16,20 +16,24 @@
         <!-- Dropdown Menu -->
         <div id="adminDropdown" class="hidden opacity-0 transform -translate-y-2 absolute w-full px-2 transition-all duration-200">
             <div class="bg-white rounded-xl shadow-lg p-2 space-y-1">
-                <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
+                <a href="#" onclick="changeAdmin('Admin 1', 'blue-500')" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
                     <div class="w-5 h-5 bg-blue-500 rounded mr-2"></div>
+                    <span>Admin 1</span>
+                </a>
+                <a href="#" onclick="changeAdmin('Admin 2', 'indigo-500')" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
+                    <div class="w-5 h-5 bg-indigo-500 rounded mr-2"></div>
                     <span>Admin 2</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
+                <a href="#" onclick="changeAdmin('Admin 3', 'orange-500')" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
                     <div class="w-5 h-5 bg-orange-500 rounded mr-2"></div>
                     <span>Admin 3</span>
                 </a>
-                <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
+                <a href="#" onclick="changeAdmin('Admin 4', 'purple-500')" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150">
                     <div class="w-5 h-5 bg-purple-500 rounded mr-2"></div>
                     <span>Admin 4</span>
                 </a>
                 <div class="border-t my-1"></div>
-                <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150 text-gray-600">
+                <a href="#" onclick="showAddNewTeam(event)" class="flex items-center px-3 py-2 rounded-lg hover:bg-white transition-colors duration-150 text-gray-600">
                     <div class="w-5 h-5 bg-gray-100 rounded mr-2 flex items-center justify-center">
                         <i class="fas fa-plus text-gray-400 text-xs"></i>
                     </div>
@@ -72,22 +76,15 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
             </a>
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
+            <a href="{{ route('transaksi.index') }}" 
+                class=" px-4 py-2 rounded-lg flex items-center justify-between {{ request()->routeIs('transaksi.index') ? 'bg-white text-blue-600' : 'text-gray-600 hover:bg-white' }}">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exchange-alt w-5"></i>
                     <span>Transaksi</span>
                 </div>
-                @if(request()->routeIs('transaksi'))
+                @if(request()->routeIs('transaksi.index'))
                     <i class="fas fa-chevron-right text-sm"></i>
                 @endif
-            </a>
-            <a href="#" 
-                class=" px-4 py-2 rounded-lg flex items-center justify-between text-gray-600 hover:bg-white">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-chart-bar w-5"></i>
-                    <span>Laporan</span>
-                </div>
             </a>
         </div>
     </nav>
@@ -130,5 +127,31 @@ document.addEventListener('click', function(event) {
         }, 200);
     }
 });
+
+function changeAdmin(adminName, colorClass) {
+    const adminTitle = document.querySelector('.text-base');
+    const adminIcon = document.querySelector('.bg-blue-500');
+    
+    // Update text
+    adminTitle.textContent = adminName;
+    
+    // Update warna
+    adminIcon.classList.remove('bg-blue-500', 'bg-indigo-500', 'bg-orange-500', 'bg-purple-500');
+    adminIcon.classList.add(`bg-${colorClass}`);
+    
+    // Tutup dropdown
+    toggleDropdown();
+}
+
+function showAddNewTeam(event) {
+    event.preventDefault();
+    Swal.fire({
+        icon: 'info',
+        title: 'Informasi',
+        text: 'Fitur Add New Team belum tersedia',
+        confirmButtonColor: '#3085d6',
+    });
+    toggleDropdown();
+}
 </script>
 @endpush

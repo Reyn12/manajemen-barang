@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SupplierExport;
 
 class SupplierController extends Controller
 {
@@ -133,5 +136,17 @@ class SupplierController extends Controller
             'success' => false,
             'message' => 'Supplier tidak ditemukan'
         ], 404);
+    }
+
+    public function downloadPDF()
+    {
+        $suppliers = Supplier::all();
+        $pdf = Pdf::loadView('supplier.export.pdf', compact('suppliers'));
+        return $pdf->download('supplier.pdf');
+    }
+
+    public function downloadExcel()
+    {
+        return Excel::download(new SupplierExport, 'supplier.xlsx');
     }
 }

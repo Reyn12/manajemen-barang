@@ -1,0 +1,57 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @foreach($produk as $item)
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+        <!-- Foto Produk -->
+        <div class="relative aspect-[4/3] bg-gray-100">
+            <img 
+                src="{{ $item->foto_produk ? (File::exists(public_path($item->foto_produk)) ? asset($item->foto_produk) : asset('storage/'.$item->foto_produk)) : asset('images/no-image.jpg') }}"
+                alt="{{ $item->nama_produk }}"
+                class="absolute w-full h-full object-cover"
+            >
+        </div>
+        
+        <!-- Info Produk -->
+        <div class="p-4 space-y-3">
+            <!-- Header: Nama & Stok -->
+            <div class="flex items-start justify-between gap-2">
+                <h3 class="font-semibold text-gray-800 line-clamp-2">{{ $item->nama_produk }}</h3>
+                <span class="shrink-0 px-2 py-1 text-xs font-medium rounded-lg {{ $item->stok > 10 ? 'bg-green-50 text-green-700' : ($item->stok > 0 ? 'bg-yellow-50 text-yellow-700' : 'bg-red-50 text-red-700') }}">
+                    {{ $item->stok }} unit
+                </span>
+            </div>
+
+            <!-- Kategori & Supplier -->
+            <div class="flex items-center gap-2 text-sm">
+                <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-lg font-medium text-xs">{{ $item->kategori }}</span>
+                <span class="text-gray-400">•</span>
+                <span class="text-gray-600 truncate">{{ $item->supplier->nama_supplier }}</span>
+            </div>
+
+            <!-- Harga -->
+            <div class="text-lg font-semibold text-gray-900">
+                Rp {{ number_format($item->harga, 0, ',', '.') }}
+            </div>
+
+            <!-- Spesifikasi -->
+            <p class="text-sm text-gray-600 line-clamp-2">{{ $item->spesifikasi }}</p>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pt-2">
+                <a href="{{ route('produk.edit', $item->id_produk) }}" 
+                    class="flex-1 px-3 py-2 text-center text-sm font-medium bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                    Edit
+                </a>
+                <form action="{{ route('produk.destroy', $item->id_produk) }}" method="POST" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                        class="w-full px-3 py-2 text-sm font-medium bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                        onclick="return confirm('Yakin hapus produk ini?')">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>

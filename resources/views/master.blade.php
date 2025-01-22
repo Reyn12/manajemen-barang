@@ -23,6 +23,9 @@
     {{-- Sweetalert 2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- Flowbite --}} 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
     {{-- Custom Style --}}
     <style>
         body {

@@ -71,13 +71,13 @@ var targetPenjualanOptions = {
 
 // Kategori Produk Chart
 var kategoriProdukOptions = {
-    series: [44, 32, 24],
+    series: @json($series), // Data jumlah produk per kategori
     chart: {
         type: 'pie',
         height: 350
     },
-    labels: ['Electronics', 'Fashion', 'Food'],
-    colors: ['#3B82F6', '#8B5CF6', '#F97316'],
+    labels: @json($labels), // Data nama kategori
+    colors: ['#3B82F6', '#8B5CF6', '#F97316', '#EF4444', '#10B981'], // Tambah warna sesuai jumlah kategori
     legend: {
         position: 'bottom'
     },
