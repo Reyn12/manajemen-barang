@@ -2,12 +2,12 @@
     <div>
         <h1 class="text-2xl font-semibold">Dashboard</h1>
         <p class="text-sm text-gray-500">Dashboard Analis</p>
-    </div>
+    </div> 
     <div class="flex items-center gap-4">
-        <button class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
+        <button onclick="pencarian()" class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
             <i class="fas fa-search text-gray-400"></i>
         </button>
-        <button class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
+        <button onclick="tambah()" class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
             <i class="fas fa-plus text-gray-400"></i>
         </button>
         <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg shadow-sm">
@@ -19,3 +19,21 @@
     </div>
 </div>
 <hr class="border-gray-300 mb-8">
+<script>
+    function pencarian() {
+    Swal.fire({
+        icon: 'info',
+        title: 'Informasi',
+        text: 'Fitur pencarian belum tersedia',
+        confirmButtonColor: '#3085d6',
+    });
+    }
+    function tambah() {
+    Swal.fire({
+        icon: 'info',
+        title: 'Informasi',
+        text: 'Fitur tambah belum tersedia',
+        confirmButtonColor: '#3085d6',
+    });
+    }
+</script>

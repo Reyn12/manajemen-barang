@@ -8,6 +8,9 @@ use App\Models\Supplier;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProdukExport;
 
 
 class ProdukController extends Controller
@@ -155,5 +158,17 @@ class ProdukController extends Controller
     public function destroy(Produk $produk)
     {
         //
+    }
+
+    public function downloadPDF()
+    {
+        $produks = Produk::with('supplier')->get();
+        $pdf = Pdf::loadView('produk.export.pdf', compact('produks'));
+        return $pdf->download('produk.pdf');
+    }
+
+    public function downloadExcel()
+    {
+        return Excel::download(new ProdukExport, 'produk.xlsx');
     }
 }

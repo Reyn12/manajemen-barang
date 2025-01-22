@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Exports\TransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 
 class TransaksiController extends Controller
@@ -64,13 +66,13 @@ class TransaksiController extends Controller
             // Simpan transaksi
             Transaksi::create($validated);
     
-            return redirect()->route('transaksi')
+            return redirect()->route('transaksi.index')
                 ->with('success', 'Transaksi berhasil ditambahkan!');
         } catch (\Exception $e) {
             // Log error
             Log::error('Error creating transaction: ' . $e->getMessage());
             
-            return redirect()->route('transaksi')
+            return redirect()->route('transaksi.index')
                 ->with('error', 'Gagal menambahkan transaksi! Error: ' . $e->getMessage());
         }
     }
@@ -153,5 +155,17 @@ class TransaksiController extends Controller
     public function export() 
     {
         return Excel::download(new TransaksiExport, 'transaksi_' . date('Y-m-d') . '.xlsx');
+    }
+
+    public function downloadPDF()
+    {
+        $transaksis = Transaksi::with('produk')->get();
+        $pdf = Pdf::loadView('transaksi.export.pdf', compact('transaksis'));
+        return $pdf->download('transaksi.pdf');
+    }
+
+    public function downloadExcel()
+    {
+        return Excel::download(new TransaksiExport, 'transaksi.xlsx');
     }
 }

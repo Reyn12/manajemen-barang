@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -14,6 +15,13 @@ class DashboardController extends Controller
     {
         // Get period from request, default to 6m
         $period = $request->get('period', '6m');
+        $kategoriData = Produk::select('kategori', DB::raw('count(*) as total'))
+                     ->groupBy('kategori')
+                     ->get();
+
+        $labels = $kategoriData->pluck('kategori')->toArray();
+        $series = $kategoriData->pluck('total')->toArray(); // Tambahkan ini
+
         
         // Set date ranges based on period
         switch($period) {
@@ -84,7 +92,9 @@ class DashboardController extends Controller
             'totalSupplier',
             'persentaseSupplier',
             'totalPenjualan',
-            'persentasePenjualan'
+            'persentasePenjualan',
+            'labels',
+            'series'
         ));
     }
 }

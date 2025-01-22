@@ -17,7 +17,17 @@
 </style>
 @endpush
 <div class="flex items-center justify-between mb-6">
-    <div class="flex items-center gap-4 flex-1">
+    <div x-data="{
+        showDownloadModal: false,
+        downloadPDF() {
+            window.location.href = '/transaksi/download/pdf';
+            this.showDownloadModal = false;
+        },
+        downloadExcel() {
+            window.location.href = '/transaksi/download/excel';
+            this.showDownloadModal = false;
+        }
+    }" class="flex items-center gap-4 flex-1">
         <!-- Search Bar -->
         <form action="{{ route('transaksi.index') }}" method="GET">
             <div class="relative">
@@ -41,13 +51,16 @@
         </div>
 
         <!-- Download Button -->
-        <a href="{{ route('transaksi.export') }}" 
-           class="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50">
-            <i class="fas fa-download text-gray-400"></i>
-            <span class="text-gray-700">Download</span>
-        </a>
+        <div class="" >
+            <button type="button" @click="showDownloadModal = true" 
+                class="flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-900 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-blue-950">
+                <i class="fas fa-download"></i>
+                <span>Download</span>
+            </button>
+            @include('transaksi.components.modal-download')
+        </div>
     </div>
-
+ 
     <!-- Tombol Tambah -->
     <div>
         <button 
