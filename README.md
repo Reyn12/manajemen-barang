@@ -6,15 +6,6 @@ Before installing Manajemen Barang, make sure your server meets the following re
 - PHP >= 8.1
 - MySQL >= 5.7
 - Composer
-- Node.js & NPM
-- BCMath PHP Extension
-- Ctype PHP Extension
-- JSON PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
 
 ## Installation Guide
 
