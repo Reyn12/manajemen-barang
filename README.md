@@ -41,6 +41,8 @@ Before installing Manajemen Barang, make sure your server meets the following re
 # Clone the repository
 git clone https://github.com/Reyn12/manajemen-barang.git
 
+Rename ".env-example" jadi ".env"
+
 # Navigate to project directory
 cd manajemen-barang
 
