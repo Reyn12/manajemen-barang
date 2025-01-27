@@ -97,6 +97,87 @@ class DatabaseSeeder extends Seeder
                 'email' => 'mastertech@mail.com',
                 'created_at' => now(),
                 'updated_at' => now()
+            ],
+            // Tambahan
+            [
+                'nama_supplier' => 'PT Mitra Hardware',
+                'alamat' => 'Jl. Pahlawan No. 167, Malang',
+                'no_telp' => '085566778899',
+                'email' => 'mitrahardware@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'CV Network Solution',
+                'alamat' => 'Jl. Veteran No. 45, Palembang',
+                'no_telp' => '086677889900',
+                'email' => 'networksolution@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'PT Data Systems',
+                'alamat' => 'Jl. Gajah Mada No. 234, Denpasar',
+                'no_telp' => '087788990011',
+                'email' => 'datasystems@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'CV Multimedia Mandiri',
+                'alamat' => 'Jl. Hayam Wuruk No. 78, Makassar',
+                'no_telp' => '088899001122',
+                'email' => 'multimediamandiri@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'PT Smart Technology',
+                'alamat' => 'Jl. Thamrin No. 90, Balikpapan',
+                'no_telp' => '089900112233',
+                'email' => 'smarttech@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'CV Digital Print Solution',
+                'alamat' => 'Jl. Asia Afrika No. 123, Bandung',
+                'no_telp' => '081100223344',
+                'email' => 'digitalprint@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'PT Inovasi Teknologi',
+                'alamat' => 'Jl. Pemuda No. 56, Surabaya',
+                'no_telp' => '082211334455',
+                'email' => 'inovasitech@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'CV Server Indonesia',
+                'alamat' => 'Jl. Antasari No. 89, Banjarmasin',
+                'no_telp' => '083322445566',
+                'email' => 'serverindonesia@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'PT Solusi Digital Nusantara',
+                'alamat' => 'Jl. Juanda No. 145, Medan',
+                'no_telp' => '084433556677',
+                'email' => 'solusdigital@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'nama_supplier' => 'CV Komputer Cendekia',
+                'alamat' => 'Jl. Imam Bonjol No. 222, Semarang',
+                'no_telp' => '085544667788',
+                'email' => 'komputercendekia@mail.com',
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ]);
 
@@ -220,6 +301,95 @@ class DatabaseSeeder extends Seeder
                 'stok' => 8,
                 'spesifikasi' => '15 inch, Intel i5, RAM 16GB, SSD 256GB',
                 'foto_produk' => 'images/products/surface-laptop5.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            // Tambahan
+            [
+                'id_supplier' => 5,
+                'nama_produk' => 'iPad Pro 2023',
+                'kategori' => 'Tablet',
+                'harga' => 14500000,
+                'stok' => 6,
+                'spesifikasi' => 'RAM 8GB, Storage 256GB, M2 Chip, Liquid Retina XDR',
+                'foto_produk' => 'images/products/ipad-pro.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 6,
+                'nama_produk' => 'Dell XPS 15',
+                'kategori' => 'Laptop',
+                'harga' => 21000000,
+                'stok' => 4,
+                'spesifikasi' => 'RAM 32GB, SSD 1TB, RTX 3070, Intel i9',
+                'foto_produk' => 'images/products/dell-xps.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 7,
+                'nama_produk' => 'Google Pixel 7 Pro',
+                'kategori' => 'HP',
+                'harga' => 13000000,
+                'stok' => 7,
+                'spesifikasi' => 'RAM 12GB, Storage 256GB, Tensor G2, Obsidian',
+                'foto_produk' => 'images/products/pixel-7.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 8,
+                'nama_produk' => 'Samsung Galaxy Tab S9',
+                'kategori' => 'Tablet',
+                'harga' => 12500000,
+                'stok' => 5,
+                'spesifikasi' => 'RAM 12GB, Storage 256GB, Snapdragon 8 Gen 2',
+                'foto_produk' => 'images/products/tab-s9.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 9,
+                'nama_produk' => 'Legion Pro 7i',
+                'kategori' => 'Laptop',
+                'harga' => 28000000,
+                'stok' => 3,
+                'spesifikasi' => 'RAM 32GB, SSD 2TB, RTX 4080, Intel i9-13900HX',
+                'foto_produk' => 'images/products/legion-pro.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 10,
+                'nama_produk' => 'OnePlus 11',
+                'kategori' => 'HP',
+                'harga' => 11000000,
+                'stok' => 9,
+                'spesifikasi' => 'RAM 16GB, Storage 256GB, Snapdragon 8 Gen 2',
+                'foto_produk' => 'images/products/oneplus-11.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 11,
+                'nama_produk' => 'Microsoft Surface Pro 9',
+                'kategori' => 'Tablet',
+                'harga' => 16800000,
+                'stok' => 4,
+                'spesifikasi' => 'RAM 16GB, SSD 512GB, Intel i7, Platinum',
+                'foto_produk' => 'images/products/surface-pro.jpg',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_supplier' => 12,
+                'nama_produk' => 'MSI Raider GE78 HX',
+                'kategori' => 'Laptop',
+                'harga' => 32000000,
+                'stok' => 2,
+                'spesifikasi' => 'RAM 64GB, SSD 2TB, RTX 4090, Intel i9-13950HX',
+                'foto_produk' => 'images/products/msi-raider.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ]
@@ -373,6 +543,107 @@ class DatabaseSeeder extends Seeder
                 'tgl_jual' => '2024-08-01',
                 'jumlah' => 3,
                 'total_harga' => 29700000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            // tambahan
+            [
+                'kode_transaksi' => 'TRX-0006',
+                'id_produk' => 6,
+                'tgl_jual' => '2025-01-24',
+                'jumlah' => 1,
+                'total_harga' => 21000000,
+                'status_bayar' => 'Pending',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0007',
+                'id_produk' => 7,
+                'tgl_jual' => '2025-01-23',
+                'jumlah' => 2,
+                'total_harga' => 26000000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0008',
+                'id_produk' => 8,
+                'tgl_jual' => '2025-01-22',
+                'jumlah' => 1,
+                'total_harga' => 12500000,
+                'status_bayar' => 'Gagal',  // Diubah dari 'Dibatalkan'
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0009',
+                'id_produk' => 9,
+                'tgl_jual' => '2025-01-20',
+                'jumlah' => 1,
+                'total_harga' => 28000000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0010',
+                'id_produk' => 10,
+                'tgl_jual' => '2025-01-19',
+                'jumlah' => 3,
+                'total_harga' => 33000000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0011',
+                'id_produk' => 11,
+                'tgl_jual' => '2025-01-18',
+                'jumlah' => 2,
+                'total_harga' => 33600000,
+                'status_bayar' => 'Pending',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0012',
+                'id_produk' => 12,
+                'tgl_jual' => '2025-01-17',
+                'jumlah' => 1,
+                'total_harga' => 32000000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0013',
+                'id_produk' => 1,
+                'tgl_jual' => '2025-01-16',
+                'jumlah' => 2,
+                'total_harga' => 24000000,
+                'status_bayar' => 'Gagal',  // Diubah dari 'Dibatalkan'
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0014',
+                'id_produk' => 2,
+                'tgl_jual' => '2025-01-15',
+                'jumlah' => 1,
+                'total_harga' => 15000000,
+                'status_bayar' => 'Sukses',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kode_transaksi' => 'TRX-0015',
+                'id_produk' => 3,
+                'tgl_jual' => '2025-01-14',
+                'jumlah' => 2,
+                'total_harga' => 27000000,
                 'status_bayar' => 'Sukses',
                 'created_at' => now(),
                 'updated_at' => now()
