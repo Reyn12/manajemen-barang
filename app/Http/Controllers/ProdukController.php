@@ -158,17 +158,12 @@ class ProdukController extends Controller
             if ($request->hasFile('foto_produk')) {
                 // Hapus foto lama jika ada
                 if ($produk->foto_produk) {
-                    $oldPath = public_path('images/products/' . $produk->foto_produk);
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                    }
+                    Storage::disk('public')->delete($produk->foto_produk);
                 }
     
                 // Upload foto baru
-                $file = $request->file('foto_produk');
-                $filename = time() . '-' . $file->getClientOriginalName();
-                $file->move(public_path('images/products'), $filename);
-                $data['foto_produk'] = $filename;
+                $foto = $request->file('foto_produk');
+                $data['foto_produk'] = $foto->store('produk', 'public');
             }
         
             Log::info('Data to update:', $data);

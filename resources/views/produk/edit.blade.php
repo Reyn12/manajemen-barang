@@ -94,9 +94,22 @@
                         <textarea name="spesifikasi" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">{{ $produk->spesifikasi }}</textarea>
                     </div>
 
-                    <div>
+                    <div x-data="{ previewUrl: '{{ $produk->foto_url }}' }">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Foto Produk</label>
-                        <input type="file" name="foto_produk" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                        
+                        <!-- Nampilin foto yang sekarang -->
+                        <div class="mb-2">
+                            <img :src="previewUrl" alt="Preview" class="w-32 h-32 object-cover rounded-lg border">
+                        </div>
+                        
+                        <!-- Input file dengan preview -->
+                        <input type="file" 
+                               name="foto_produk" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                               @change="const file = $event.target.files[0];
+                                        if(file) {
+                                            previewUrl = URL.createObjectURL(file);
+                                        }">
                     </div>
 
                     <div class="flex justify-end gap-4">
