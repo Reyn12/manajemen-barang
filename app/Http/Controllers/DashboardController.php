@@ -13,6 +13,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+
         // Get period from request, default to 6m
         $period = $request->get('period', '6m');
         $kategoriData = Produk::select('kategori', DB::raw('count(*) as total'))
@@ -22,6 +23,35 @@ class DashboardController extends Controller
         $labels = $kategoriData->pluck('kategori')->toArray();
         $series = $kategoriData->pluck('total')->toArray(); // Tambahkan ini
 
+        // Get top selling products
+        $topProducts = Transaksi::select('produks.nama_produk', DB::raw('SUM(transaksis.jumlah) as total_terjual'))
+            ->join('produks', 'transaksis.id_produk', '=', 'produks.id_produk')
+            ->groupBy('produks.id_produk', 'produks.nama_produk')
+            ->orderBy('total_terjual', 'desc')
+            ->take(5)
+            ->get();
+
+        $productLabels = $topProducts->pluck('nama_produk')->toArray();
+        $productSeries = $topProducts->pluck('total_terjual')->toArray();
+
+        // Get lowest stock products
+        $lowStockProducts = Produk::orderBy('stok', 'asc')
+            ->take(5)
+            ->get(['nama_produk', 'stok']);
+
+        $stockLabels = $lowStockProducts->pluck('nama_produk')->toArray();
+        $stockSeries = $lowStockProducts->pluck('stok')->toArray();
+
+        // Get top suppliers by product count
+        $topSuppliers = Supplier::select('suppliers.nama_supplier', DB::raw('COUNT(produks.id_produk) as total_produk'))
+            ->leftJoin('produks', 'suppliers.id_supplier', '=', 'produks.id_supplier')
+            ->groupBy('suppliers.id_supplier', 'suppliers.nama_supplier')
+            ->orderBy('total_produk', 'desc')
+            ->take(5)
+            ->get();
+
+        $supplierLabels = $topSuppliers->pluck('nama_supplier')->toArray();
+        $supplierSeries = $topSuppliers->pluck('total_produk')->toArray();
         
         // Set date ranges based on period
         switch($period) {
@@ -94,7 +124,14 @@ class DashboardController extends Controller
             'totalPenjualan',
             'persentasePenjualan',
             'labels',
-            'series'
+            'series',
+            'stockLabels',
+            'stockSeries',
+            'productLabels',
+            'productSeries',
+            'supplierLabels',
+            'supplierSeries'
+
         ));
     }
 }
