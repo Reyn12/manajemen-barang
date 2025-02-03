@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl border border-gray-200">
     <div class="overflow-x-auto">
         <table class="w-full table-fixed divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+            <thead class="bg-blue-100">
                 <tr>
                     <th class="w-24 px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID Supplier</th>
                     <th class="w-44 px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Supplier</th>
@@ -18,7 +18,7 @@
                 }
             }"> 
                 <template x-for="supplier in filteredSuppliers" :key="supplier.id_supplier">
-                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="text-sm font-medium text-gray-900" x-text="supplier.id_supplier"></span>
                         </td>
