@@ -37,8 +37,11 @@
     </style>
     @stack('styles')
 </head>
-<body class="bg-gray-50">
-    @yield('content')
-    @stack('scripts')
+<body class="relative min-h-screen">
+    <div class="fixed inset-0 bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/30 backdrop-blur-[100px] -z-10"></div>
+    <div class="relative z-0">
+        @yield('content')
+        @stack('scripts')
+    </div>
 </body>
 </html>

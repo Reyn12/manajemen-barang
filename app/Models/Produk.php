@@ -28,4 +28,23 @@ class Produk extends Model
     {
         return $this->hasMany(Transaksi::class, 'id_produk');
     }
+
+    public function getFotoUrlAttribute()
+    {
+        if (!$this->foto_produk) {
+            return null;
+        }
+
+        // Kalo path nya udah pake format baru (produk/...)
+        if (str_starts_with($this->foto_produk, 'produk/')) {
+            return asset('storage/' . $this->foto_produk);
+        }
+
+        // Kalo masih pake format lama (images/products/...)
+        if (str_starts_with($this->foto_produk, 'images/products/')) {
+            return asset($this->foto_produk);
+        }
+
+        return asset('storage/produk/' . $this->foto_produk);
+    }
 }

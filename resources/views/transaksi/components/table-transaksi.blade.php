@@ -1,7 +1,7 @@
 <div class="bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
-            <thead class="text-gray-700 bg-gray-100">
+            <thead class=" bg-blue-100 text-gray-600">
                 <tr>
                     <th class="px-4 py-3">Kode Transaksi</th>
                     <th class="px-4 py-3">Tanggal Jual</th>
@@ -14,7 +14,7 @@
             </thead>
             <tbody class="divide-y">
                 @forelse ($transaksis as $transaksi)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 even:bg-gray-50">
                         <td class="px-4 py-3">{{ $transaksi->kode_transaksi }}</td>
                         <td class="px-4 py-3">{{ date('d/m/Y', strtotime($transaksi->tgl_jual)) }}</td>
                         <td class="px-4 py-3">{{ $transaksi->produk->nama_produk }}</td>

@@ -4,7 +4,7 @@
         <!-- Foto Produk -->
         <div class="relative aspect-[4/3] bg-gray-100">
             <img 
-                src="{{ $item->foto_produk ? (File::exists(public_path($item->foto_produk)) ? asset($item->foto_produk) : asset('storage/'.$item->foto_produk)) : asset('images/no-image.jpg') }}"
+                src="{{ $item->foto_url ?? asset('images/no-image.jpg') }}"
                 alt="{{ $item->nama_produk }}"
                 class="absolute w-full h-full object-cover"
             >
@@ -49,6 +49,10 @@
         </div>
     </div>
     @endforeach
+</div>
+
+<div class="mt-6">
+    {{ $produk->links() }}
 </div>
 
 <script>

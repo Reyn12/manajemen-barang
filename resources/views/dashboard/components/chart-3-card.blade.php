@@ -1,62 +1,68 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Profit & Loss Chart -->
-    <div class="bg-white p-6 rounded-xl border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-start gap-4">
-                <div class="bg-green-100 p-3 rounded-lg">
-                    <i class="fas fa-chart-line text-green-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-medium">Profit and Loss</h3>
-                    <p class="text-sm text-gray-500">Company's revenues and expenses</p>
+    <!-- Product Stock Chart -->
+    <div class="relative p-6 rounded-xl border border-gray-200 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-red-50 backdrop-blur-sm"></div>
+        <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-start gap-4">
+                    <div class="bg-red-100 p-3 rounded-lg">
+                        <i class="fas fa-boxes text-red-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium">Stok Produk</h3>
+                        <p class="text-sm text-gray-500">Produk dengan stok paling sedikit</p>
+                    </div>
                 </div>
             </div>
+            <div id="productStockChart"></div>
         </div>
-        <div id="profitLossChart"></div>
     </div>
 
     <!-- Product Sale Chart -->
-    <div class="bg-white p-6 rounded-xl border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-start gap-4">
-                <div class="bg-blue-100 p-3 rounded-lg">
-                    <i class="fas fa-box text-blue-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-medium">Product Sale</h3>
-                    <p class="text-sm text-gray-500">Number of products sold in branches</p>
+    <div class="relative p-6 rounded-xl border border-gray-200 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50 backdrop-blur-sm"></div>
+        <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-start gap-4">
+                    <div class="bg-blue-100 p-3 rounded-lg">
+                        <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium">Produk Terlaris</h3>
+                        <p class="text-sm text-gray-500">Top 5 produk paling banyak terjual</p>
+                    </div>
                 </div>
             </div>
+            <div id="productSaleChart"></div>
         </div>
-        <div id="productSaleChart"></div>
     </div>
 
     <!-- Top Supplier Chart -->
-    <div class="bg-white p-6 rounded-xl border border-gray-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-start gap-4">
-                <div class="bg-purple-100 p-3 rounded-lg">
-                    <i class="fas fa-truck text-purple-600 text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-medium">Top Supplier</h3>
-                    <p class="text-sm text-gray-500">Suppliers with best performance</p>
+    <div class="relative p-6 rounded-xl border border-gray-200 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-50 backdrop-blur-sm"></div>
+        <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-start gap-4">
+                    <div class="bg-purple-100 p-3 rounded-lg">
+                        <i class="fas fa-truck text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium">Top Supplier</h3>
+                        <p class="text-sm text-gray-500">Supplier dengan produk terbanyak</p>
+                    </div>
                 </div>
             </div>
+            <div id="topSupplierChart"></div>
         </div>
-        <div id="topSupplierChart"></div>
     </div>
 </div>
 
 <script>
-// Profit & Loss Chart
-var profitLossOptions = {
+// Product Stock Chart
+var productStockOptions = {
     series: [{
-        name: 'Revenue',
-        data: [44000, 55000, 57000, 56000, 61000, 58000]
-    }, {
-        name: 'Expenses',
-        data: [35000, 41000, 36000, 26000, 45000, 48000]
+        name: 'Stok',
+        data: @json($stockSeries)
     }],
     chart: {
         type: 'bar',
@@ -65,40 +71,34 @@ var profitLossOptions = {
             show: false
         }
     },
-    colors: ['#3B82F6', '#EF4444'],
+    colors: ['#EF4444'],
     plotOptions: {
         bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            borderRadius: 4
-        },
+            horizontal: true,
+            distributed: true,
+            borderRadius: 4,
+            barHeight: '40%'
+        }
     },
     dataLabels: {
-        enabled: false
+        enabled: true,
+        style: {
+            fontSize: '12px'
+        }
     },
     grid: {
         show: false
     },
-    stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent']
-    },
     xaxis: {
-        categories: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    },
-    fill: {
-        opacity: 1
-    },
-    legend: {
-        position: 'bottom'
+        categories: @json($stockLabels)
     }
 };
 
 // Product Sale Chart
 var productSaleOptions = {
     series: [{
-        data: [1560, 2420, 1980]
+        name: 'Total Terjual',
+        data: @json($productSeries)
     }],
     chart: {
         type: 'bar',
@@ -107,7 +107,7 @@ var productSaleOptions = {
             show: false
         }
     },
-    colors: ['#3B82F6', '#8B5CF6', '#F97316'],
+    colors: ['#3B82F6'],
     plotOptions: {
         bar: {
             horizontal: true,
@@ -117,21 +117,24 @@ var productSaleOptions = {
         }
     },
     dataLabels: {
-        enabled: false
+        enabled: true,
+        style: {
+            fontSize: '12px'
+        }
     },
     grid: {
         show: false
     },
     xaxis: {
-        categories: ['Store A', 'Store B', 'Store C'],
+        categories: @json($productLabels)
     }
 };
 
 // Top Supplier Chart
 var topSupplierOptions = {
     series: [{
-        name: 'Sales',
-        data: [80, 75, 70, 65, 60, 55, 50]
+        name: 'Total Produk',
+        data: @json($supplierSeries)
     }],
     chart: {
         height: 200,
@@ -148,24 +151,27 @@ var topSupplierOptions = {
             barHeight: '40%'
         }
     },
-    colors: ['#3B82F6'],
+    colors: ['#8B5CF6'],
     dataLabels: {
-        enabled: false
+        enabled: true,
+        style: {
+            fontSize: '12px'
+        }
     },
     grid: {
         show: false
     },
     xaxis: {
-        categories: ['John', 'Sarah', 'Mike', 'Lisa', 'Tom', 'Anna', 'Steve'],
+        categories: @json($supplierLabels)
     }
 };
 
 // Render Charts
-var profitLossChart = new ApexCharts(document.querySelector("#profitLossChart"), profitLossOptions);
+var productStockChart = new ApexCharts(document.querySelector("#productStockChart"), productStockOptions);
 var productSaleChart = new ApexCharts(document.querySelector("#productSaleChart"), productSaleOptions);
 var topSupplierChart = new ApexCharts(document.querySelector("#topSupplierChart"), topSupplierOptions);
 
-profitLossChart.render();
+productStockChart.render();
 productSaleChart.render();
 topSupplierChart.render();
 </script>
