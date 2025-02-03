@@ -51,6 +51,10 @@
     @endforeach
 </div>
 
+<div class="mt-6">
+    {{ $produk->links() }}
+</div>
+
 <script>
 function confirmDelete(id) {
     Swal.fire({
