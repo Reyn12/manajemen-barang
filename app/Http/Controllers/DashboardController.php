@@ -52,6 +52,21 @@ class DashboardController extends Controller
 
         $supplierLabels = $topSuppliers->pluck('nama_supplier')->toArray();
         $supplierSeries = $topSuppliers->pluck('total_produk')->toArray();
+
+        // Get stock and sales by category
+        $categoryStats = DB::table('produks')
+        ->select(
+            'produks.kategori',
+            DB::raw('SUM(produks.stok) as total_stok'),
+            DB::raw('COALESCE(SUM(transaksis.jumlah), 0) as total_terjual')
+        )
+        ->leftJoin('transaksis', 'produks.id_produk', '=', 'transaksis.id_produk')
+        ->groupBy('produks.kategori')
+        ->get();
+
+        $categories = $categoryStats->pluck('kategori')->toArray();
+        $stockData = $categoryStats->pluck('total_stok')->toArray();
+        $salesData = $categoryStats->pluck('total_terjual')->toArray();
         
         // Set date ranges based on period
         switch($period) {
@@ -130,7 +145,10 @@ class DashboardController extends Controller
             'productLabels',
             'productSeries',
             'supplierLabels',
-            'supplierSeries'
+            'supplierSeries',
+            'categories',
+            'stockData',
+            'salesData'
 
         ));
     }
