@@ -140,7 +140,9 @@
                                            @input="hitungTotal()"
                                            required 
                                            min="1"
+                                           :max="stokProduk[idProduk] || 1"
                                            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <p x-show="errorStok" x-text="errorStok" class="mt-1 text-sm text-red-600"></p>
                                 </div>
 
                                 <!-- Tanggal Jual -->
@@ -246,19 +248,38 @@
         @endforeach
     };
 
+    // Data stok produk
+    const stokProduk = {
+        @foreach($produks as $produk)
+            {{ $produk->id_produk }}: {{ $produk->stok }},
+        @endforeach
+    };
+
     // Alpine.js data untuk handle total harga
     document.addEventListener('alpine:init', () => {
         Alpine.data('formData', () => ({
             idProduk: '',
             jumlah: '',
             totalHarga: '',
+            errorStok: '',
             
             hitungTotal() {
                 if(this.idProduk && this.jumlah) {
+                    // Validasi stok
+                    const stok = stokProduk[this.idProduk];
+                    if (this.jumlah > stok) {
+                        this.errorStok = `Stok tidak mencukupi! Stok tersedia: ${stok}`;
+                        this.jumlah = stok; // Reset ke stok maksimal
+                    } else {
+                        this.errorStok = '';
+                    }
+                    
+                    // Hitung total harga
                     const harga = hargaProduk[this.idProduk];
                     this.totalHarga = harga * this.jumlah;
                 } else {
                     this.totalHarga = '';
+                    this.errorStok = '';
                 }
             }
         }));
