@@ -30,7 +30,8 @@ class TransaksiController extends Controller
             ->orWhere('id_transaksi', 'like', "%{$search}%");
         }
         
-        $transaksis = $query->latest()->paginate(10);
+        $transaksis = $query->orderBy('id_transaksi', 'desc')
+                           ->paginate(10);
         $produks = Produk::all();
     
         return view('transaksi.transaksi', [

@@ -27,8 +27,8 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                             {{-- Edit Button --}}
-                            <button data-modal-target="editModal{{ $transaksi->id_transaksi }}" 
-                                    data-modal-toggle="editModal{{ $transaksi->id_transaksi }}"
+                            <button type="button"
+                                    @click="$dispatch('open-modal-{{ $transaksi->id_transaksi }}')"
                                     class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200">
                                 <i class="fas fa-edit text-lg"></i>
                             </button>
