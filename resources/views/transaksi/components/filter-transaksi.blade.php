@@ -65,8 +65,7 @@
     <div>
         <button 
             type="button"
-            data-modal-target="tambahTransaksiModal" 
-            data-modal-toggle="tambahTransaksiModal"
+            @click="$dispatch('open-tambah-modal')"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
         >
             <i class="fas fa-plus"></i>
@@ -76,91 +75,128 @@
 </div>
 
 <!-- Modal Tambah Transaksi -->
-<div id="tambahTransaksiModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full shadow-2xl" data-modal-backdrop="static">
-    <div class="relative w-full max-w-5xl max-h-full animate-modal-show">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow">
+<div x-data="{ open: false }"
+     @open-tambah-modal.window="open = true"
+     @close-tambah-modal.window="open = false"
+     :class="{ 'hidden': !open }"
+     class="fixed inset-0 z-50 overflow-y-auto"
+     aria-labelledby="modal-title" 
+     role="dialog" 
+     aria-modal="true"
+     x-cloak>
+    
+    <!-- Background backdrop -->
+    <div class="flex items-center justify-center min-h-screen p-4 text-center sm:p-0">
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <div class="relative w-full max-w-3xl bg-white rounded-lg shadow-xl transform transition-all">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 border-b">
+            <div class="flex items-center justify-between p-4 border-b rounded-t">
                 <h3 class="text-xl font-semibold text-gray-900">
                     Tambah Transaksi
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="tambahTransaksiModal">
+                <button @click="open = false" 
+                        type="button" 
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center">
                     <i class="fas fa-times"></i>
                 </button>
-
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('transaksi.store') }}" method="POST" id="formTambahTransaksi">
+            <form action="{{ route('transaksi.store') }}" method="POST" id="formTambahTransaksi" x-data="formData">
                 @csrf
                 <div class="p-6">
                     <div class="flex gap-8">
                         <!-- Kolom Kiri - Gambar -->
-                        <div class="w-1/3 flex items-center justify-center">
-                            <img src="{{ asset('images/bgTambah2.png') }}" alt="Transaction Illustration" class="w-full max-w-md">
+                        <div class="w-1/3">
+                            <img src="{{ asset('images/bgTambah2.png') }}" alt="Transaction Illustration" class="w-full rounded-lg">
                         </div>
-
+                        
                         <!-- Kolom Kanan - Form -->
-                        <div class="w-2/3">
-                            <div class="grid grid-cols-2 gap-6">
-                                <!-- Produk -->
+                        <div class="w-2/3 space-y-4">
+                            <!-- Produk -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Produk</label>
+                                <select name="id_produk" 
+                                       x-model="idProduk"
+                                       @change="hitungTotal()"
+                                       required 
+                                       class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Pilih Produk</option>
+                                    @foreach($produks as $produk)
+                                        <option value="{{ $produk->id_produk }}">{{ $produk->nama_produk }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Jumlah -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Produk</label>
-                                    <select name="id_produk" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
-                                        <option value="">Pilih Produk</option>
-                                        @foreach($produks as $produk)
-                                            <option value="{{ $produk->id_produk }}">{{ $produk->nama_produk }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
+                                    <input type="number" 
+                                           name="jumlah" 
+                                           x-model="jumlah"
+                                           @input="hitungTotal()"
+                                           required 
+                                           min="1"
+                                           class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
                                 </div>
 
                                 <!-- Tanggal Jual -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Jual</label>
-                                    <input type="date" name="tgl_jual" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                                    <input type="date" 
+                                           name="tgl_jual" 
+                                           required
+                                           class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
                                 </div>
+                            </div>
 
-                                <!-- Jumlah -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
-                                    <input type="number" name="jumlah" min="1" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                                </div>
+                            <!-- Total Harga -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Total Harga</label>
+                                <input type="number" 
+                                       name="total_harga" 
+                                       x-model="totalHarga"
+                                       required
+                                       readonly
+                                       class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                            </div>
 
-                                <!-- Total Harga -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Total Harga</label>
-                                    <input type="number" name="total_harga" min="0" required readonly
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-blue-500">
-                                </div>
-
-                                <!-- Status Bayar -->
-                                <div class="col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Status Bayar</label>
-                                    <select name="status_bayar" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
-                                        <option value="">Pilih Status</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Sukses">Sukses</option>
-                                        <option value="Gagal">Gagal</option>
-                                    </select>
-                                </div>
+                            <!-- Status Bayar -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Status Bayar</label>
+                                <select name="status_bayar" 
+                                        required 
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Pilih Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Sukses">Sukses</option>
+                                    <option value="Gagal">Gagal</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal footer -->
-                <div class="flex items-center justify-end p-4 border-t gap-4">
-                    <button type="button" class="px-4 py-2 text-gray-500 hover:text-gray-700" data-modal-hide="tambahTransaksiModal">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg ml-2 hover:bg-blue-700">Simpan</button>
+                <div class="flex items-center justify-end p-4 space-x-2 border-t">
+                    <button @click="open = false" 
+                            type="button"
+                            class="px-4 py-2 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium">
+                        Batal
+                    </button>
+                    <button type="submit"
+                            class="px-4 py-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm">
+                        Simpan
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
+ 
 @push('scripts')
 <script>
     // Alert untuk success
@@ -203,11 +239,6 @@
         });
     });
 
-    // Auto calculate total harga
-    const produkSelect = document.querySelector('select[name="id_produk"]');
-    const jumlahInput = document.querySelector('input[name="jumlah"]');
-    const totalHargaInput = document.querySelector('input[name="total_harga"]');
-
     // Data harga produk
     const hargaProduk = {
         @foreach($produks as $produk)
@@ -215,22 +246,22 @@
         @endforeach
     };
 
-    // Fungsi untuk menghitung total
-    function hitungTotal() {
-        const idProduk = produkSelect.value;
-        const jumlah = jumlahInput.value;
-        
-        if(idProduk && jumlah) {
-            const harga = hargaProduk[idProduk];
-            const total = harga * jumlah;
-            totalHargaInput.value = total;
-        } else {
-            totalHargaInput.value = '';
-        }
-    }
-
-    // Event listeners
-    produkSelect.addEventListener('change', hitungTotal);
-    jumlahInput.addEventListener('input', hitungTotal);
+    // Alpine.js data untuk handle total harga
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('formData', () => ({
+            idProduk: '',
+            jumlah: '',
+            totalHarga: '',
+            
+            hitungTotal() {
+                if(this.idProduk && this.jumlah) {
+                    const harga = hargaProduk[this.idProduk];
+                    this.totalHarga = harga * this.jumlah;
+                } else {
+                    this.totalHarga = '';
+                }
+            }
+        }));
+    });
 </script>
 @endpush
