@@ -64,9 +64,21 @@ class TransaksiController extends Controller
         ]);
     
         try {
+            // Cek stok produk
+            $produk = Produk::findOrFail($validated['id_produk']);
+            if ($produk->stok < $validated['jumlah']) {
+                return redirect()->route('transaksi.index')
+                    ->with('error', 'Stok produk tidak mencukupi!');
+            }
+
             // Generate kode transaksi
             $validated['kode_transaksi'] = Transaksi::generateKodeTransaksi();
             
+            // Kurangi stok produk
+            $produk->update([
+                'stok' => $produk->stok - $validated['jumlah']
+            ]);
+
             // Simpan transaksi
             Transaksi::create($validated);
     
@@ -118,21 +130,45 @@ class TransaksiController extends Controller
             'status_bayar' => 'required'
         ]);
     
-        $produk = Produk::findOrFail($request->id_produk);
-        $total_harga = $produk->harga * $request->jumlah;
-    
-        $transaksi->update([
-            'id_produk' => $request->id_produk,
-            'jumlah' => $request->jumlah,
-            'tgl_jual' => $request->tgl_jual,
-            'total_harga' => $total_harga,
-            'status_bayar' => $request->status_bayar
-        ]);
-    
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaksi berhasil diupdate!'
-        ]);
+        try {
+            $produk = Produk::findOrFail($request->id_produk);
+            
+            // Hitung perubahan jumlah
+            $selisihJumlah = $request->jumlah - $transaksi->jumlah;
+            
+            // Cek stok jika ada penambahan jumlah
+            if ($selisihJumlah > 0 && $produk->stok < $selisihJumlah) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stok produk tidak mencukupi!'
+                ], 400);
+            }
+            
+            // Update stok produk
+            $produk->update([
+                'stok' => $produk->stok - $selisihJumlah
+            ]);
+            
+            $total_harga = $produk->harga * $request->jumlah;
+        
+            $transaksi->update([
+                'id_produk' => $request->id_produk,
+                'jumlah' => $request->jumlah,
+                'tgl_jual' => $request->tgl_jual,
+                'total_harga' => $total_harga,
+                'status_bayar' => $request->status_bayar
+            ]);
+        
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaksi berhasil diupdate!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengupdate transaksi: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
