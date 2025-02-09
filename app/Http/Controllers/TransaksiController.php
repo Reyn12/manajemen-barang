@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use App\Exports\TransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -19,21 +21,69 @@ class TransaksiController extends Controller
      */
     public function index(Request $request)
     {
+
+        // Di awal function, sebelum filter
+        Log::info('All Transactions:', [
+            'data' => Transaksi::all(['id_transaksi', 'tgl_jual', 'status_bayar'])->toArray()
+        ]);
+
+        // Tambahkan logging untuk request
+        Log::info('Filter Parameters:', [
+            'search' => $request->input('search'),
+            'date' => $request->input('date'),
+            'status' => $request->input('status')
+        ]);
+
         $search = $request->input('search');
+        $date = $request->input('date');
+        $status = $request->input('status');
         
         $query = Transaksi::query();
         
+        // Search filter
         if ($search) {
             $query->whereHas('produk', function($q) use ($search) {
                 $q->where('nama_produk', 'like', "%{$search}%");
             })
             ->orWhere('id_transaksi', 'like', "%{$search}%");
         }
+
+        // Date filter
+        if ($date) {
+            Log::info('Applying date filter:', ['date' => $date]);
+            switch($date) {
+                case 'today':
+                    $query->whereDate('tgl_jual', today());
+                    break;
+                case 'week':
+                    $query->whereBetween('tgl_jual', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $query->whereMonth('tgl_jual', now()->month)
+                        ->whereYear('tgl_jual', now()->year);
+                    break;
+            }
+        }
+
+        // Status filter
+        if ($status && $status !== 'all') {
+            Log::info('Applying status filter:', ['status' => $status]);
+            $query->where('status_bayar', $status);
+        }
+        // Enable query logging
+        DB::enableQueryLog();
         
         $transaksis = $query->orderBy('id_transaksi', 'desc')
-                           ->paginate(10);
+                        ->paginate(10)
+                        ->withQueryString();
+
+        // Log the executed query
+        Log::info('Executed Queries:', DB::getQueryLog());
+        Log::info('Total Records:', ['count' => $transaksis->total()]);
+        Log::info('Current Records:', ['data' => $transaksis->items()]);
+        
         $produks = Produk::all();
-    
+
         return view('transaksi.transaksi', [
             'transaksis' => $transaksis,
             'produks' => $produks,
