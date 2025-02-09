@@ -41,6 +41,15 @@
                                     class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200 mr-6">
                                 <i class="fas fa-trash text-lg"></i>
                             </button>
+
+                            {{-- Form Delete --}}
+                            <form id="delete-form-{{ $transaksi->id_transaksi }}" 
+                                action="{{ route('transaksi.destroy', $transaksi->id_transaksi) }}" 
+                                method="POST" 
+                                style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         
                             {{-- Include Modal --}}
                             @include('transaksi.components.edit-modal', ['transaksi' => $transaksi, 'produks' => $produks])

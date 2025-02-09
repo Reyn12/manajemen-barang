@@ -230,15 +230,9 @@ class TransaksiController extends Controller
             $transaksi = Transaksi::findOrFail($id);
             $transaksi->delete();
             
-            return response()->json([
-                'success' => true,
-                'message' => 'Data transaksi berhasil dihapus'
-            ]);
+            return redirect()->back()->with('success', 'Data transaksi berhasil dihapus');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus data transaksi'
-            ], 500);
+            return redirect()->back()->with('error', 'Gagal menghapus data transaksi');
         }
     }
     

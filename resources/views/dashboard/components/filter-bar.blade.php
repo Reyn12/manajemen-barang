@@ -39,10 +39,6 @@
             <i class="fas fa-sync-alt"></i>
             <span>Refresh</span>
         </button>
-        <button onclick="showCustomizeAlert()" class="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50">
-            <i class="fas fa-sliders-h"></i>
-            <span>Customize</span>
-        </button>
         <div x-data="{ showDownloadModal: false }">
             <button @click="showDownloadModal = true" 
                 class="flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-900 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-blue-950">
