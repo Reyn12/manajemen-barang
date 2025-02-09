@@ -17,7 +17,7 @@
                     return date ? date.split('T')[0] : '';
                 }
             }"> 
-                <template x-for="supplier in filteredSuppliers" :key="supplier.id_supplier">
+                <template x-for="supplier in filteredSuppliers()" :key="supplier.id_supplier">
                     <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="text-sm font-medium text-gray-900" x-text="supplier.id_supplier"></span>

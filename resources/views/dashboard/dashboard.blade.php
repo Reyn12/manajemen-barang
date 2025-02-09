@@ -14,6 +14,8 @@
 
             @include('dashboard.components.summary3card')
 
+            @include('dashboard.components.chart-3-card-statusPesanan')
+
             @include('dashboard.components.chart-3-card')
 
             @include('dashboard.components.chart-2-card')

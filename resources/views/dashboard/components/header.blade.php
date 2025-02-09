@@ -4,12 +4,6 @@
         <p class="text-sm text-gray-500">Dashboard Analis</p>
     </div> 
     <div class="flex items-center gap-4">
-        <button onclick="pencarian()" class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
-            <i class="fas fa-search text-gray-400"></i>
-        </button>
-        <button onclick="tambah()" class="w-10 h-10 border border-gray-300 p-2 hover:bg-gray-100 rounded-lg">
-            <i class="fas fa-plus text-gray-400"></i>
-        </button>
         <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg shadow-sm">
             <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                 <span class="text-white font-medium">R</span>

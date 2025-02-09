@@ -28,4 +28,4 @@
         @include('supplier.components.modal-edit')
     </div>
 </div>
-@endsection
+@endsection 

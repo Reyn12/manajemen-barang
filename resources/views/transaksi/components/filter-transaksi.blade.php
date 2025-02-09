@@ -43,11 +43,71 @@
         </form>
 
         <!-- Filter Dropdown -->
-        <div class="relative">
-            <button class="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50">
-                <i class="fas fa-filter text-gray-400"></i>
-                <span class="text-gray-700">Filters</span>
-            </button>
+        <div class="relative" 
+        x-data="{
+            show: false,
+            selectedDate: 'all',
+            selectedStatus: 'all',
+            applyFilter() {
+                const url = new URL(window.location.href);
+                // Reset search params dulu
+                url.searchParams.delete('date');
+                url.searchParams.delete('status');
+                url.searchParams.delete('page');
+                
+                // Tambah params baru sesuai filter
+                if (this.selectedDate !== 'all') url.searchParams.set('date', this.selectedDate);
+                if (this.selectedStatus !== 'Semua Status') url.searchParams.set('status', this.selectedStatus);
+                
+                window.location.href = url.toString();
+            }
+        }">
+        <button @click="show = !show" 
+                class="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50">
+            <i class="fas fa-filter text-gray-400"></i>
+            <span class="text-gray-700">Filters</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div x-show="show" 
+            @click.away="show = false"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter-end="transform opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95"
+            class="absolute left-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-4 space-y-4 z-50">
+            
+            <!-- Filter by Date -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Date</label>
+                <select x-model="selectedDate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                    <option value="all">Semua</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="week">Minggu Ini</option>
+                    <option value="month">Bulan Ini</option>
+                </select>
+            </div>
+ 
+            <!-- Filter by Status -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+                <select x-model="selectedStatus" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                    <option value="all">Semua Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Sukses">Sukses</option>
+                    <option value="Gagal">Gagal</option>
+                </select>
+            </div>
+
+            <!-- Apply Filter Button -->
+            <div>
+                <button @click="applyFilter()" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Terapkan Filter
+                </button>
+            </div>
+        </div>
         </div>
 
         <!-- Download Button -->

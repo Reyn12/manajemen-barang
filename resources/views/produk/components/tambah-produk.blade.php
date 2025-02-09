@@ -132,7 +132,24 @@
                             <!-- Foto Produk -->
                             <div x-data="{ fileName: '', filePreview: null }">
                                 <label class="block text-sm font-medium text-gray-700">Foto Produk</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                <div 
+                                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+                                    x-on:dragover.prevent="$el.classList.add('border-blue-500')"
+                                    x-on:dragleave.prevent="$el.classList.remove('border-blue-500')"
+                                    x-on:drop.prevent="
+                                        $el.classList.remove('border-blue-500');
+                                        const file = $event.dataTransfer.files[0];
+                                        if (file && file.type.startsWith('image/')) {
+                                            fileName = file.name;
+                                            const reader = new FileReader();
+                                            reader.onload = (e) => {
+                                                filePreview = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                            $refs.fileInput.files = $event.dataTransfer.files;
+                                        }
+                                    "
+                                >
                                     <div class="space-y-1 text-center">
                                         <!-- Preview Image -->
                                         <template x-if="filePreview">
@@ -156,7 +173,8 @@
                                                     id="foto_produk" 
                                                     name="foto_produk" 
                                                     type="file" 
-                                                    class="sr-only" 
+                                                    class="sr-only"
+                                                    x-ref="fileInput" 
                                                     accept="image/*"
                                                     @change="
                                                         const file = $event.target.files[0];

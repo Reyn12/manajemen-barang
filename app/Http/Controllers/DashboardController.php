@@ -131,6 +131,53 @@ class DashboardController extends Controller
             $persentaseSupplier = (($totalSupplier - $supplierSebelumnya) / $supplierSebelumnya) * 100;
         }
 
+        // Hitung jumlah transaksi per status
+        $pendingCount = Transaksi::where('status_bayar', 'Pending')
+            ->where('tgl_jual', '>=', $startDate)
+            ->count();
+        $suksesCount = Transaksi::where('status_bayar', 'Sukses')
+            ->where('tgl_jual', '>=', $startDate)
+            ->count();
+        $gagalCount = Transaksi::where('status_bayar', 'Gagal')
+            ->where('tgl_jual', '>=', $startDate)
+            ->count();
+        
+        $pendingTotal = Transaksi::where('status_bayar', 'Pending')
+            ->where('tgl_jual', '>=', $startDate)
+            ->sum('total_harga');
+        $suksesTotal = Transaksi::where('status_bayar', 'Sukses')
+            ->where('tgl_jual', '>=', $startDate)
+            ->sum('total_harga');
+        $gagalTotal = Transaksi::where('status_bayar', 'Gagal')
+            ->where('tgl_jual', '>=', $startDate)
+            ->sum('total_harga');        
+        // Data untuk chart 7 hari terakhir
+        $dates = collect(range(6, 0))->map(function ($days) {
+            return Carbon::now()->subDays($days)->format('Y-m-d');
+        });
+
+        $pendingSeries = $dates->map(function ($date) {
+            return Transaksi::where('status_bayar', 'Pending')
+                ->whereDate('created_at', $date)
+                ->count();
+        })->values();
+
+        $suksesSeries = $dates->map(function ($date) {
+            return Transaksi::where('status_bayar', 'Sukses')
+                ->whereDate('created_at', $date)
+                ->count();
+        })->values();
+
+        $gagalSeries = $dates->map(function ($date) {
+            return Transaksi::where('status_bayar', 'Gagal')
+                ->whereDate('created_at', $date)
+                ->count();
+        })->values();
+
+        $dates = $dates->map(function ($date) {
+            return Carbon::parse($date)->format('d M');
+        });
+
         return view('dashboard.dashboard', compact(
             'totalProduk',
             'persentaseProduk',
@@ -148,8 +195,17 @@ class DashboardController extends Controller
             'supplierSeries',
             'categories',
             'stockData',
-            'salesData'
-
+            'salesData',
+            'pendingCount',
+            'suksesCount',
+            'gagalCount',
+            'pendingSeries',
+            'suksesSeries',
+            'gagalSeries',
+            'dates',
+            'pendingTotal',
+            'suksesTotal',
+            'gagalTotal'
         ));
     }
 }
