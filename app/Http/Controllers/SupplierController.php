@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SupplierExport;
+use Illuminate\Validation\ValidationException;
 
 class SupplierController extends Controller
 {
@@ -35,10 +36,19 @@ class SupplierController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nama_supplier' => 'required',
+                'nama_supplier' => 'required|unique:suppliers,nama_supplier',
                 'alamat' => 'required',
-                'no_telp' => 'required',
-                'email' => 'required|email'
+                'no_telp' => 'required|unique:suppliers,no_telp',
+                'email' => 'required|email|unique:suppliers,email'
+            ], [
+                'nama_supplier.unique' => 'Nama supplier ini sudah ada',
+                'nama_supplier.required' => 'Nama supplier harus diisi',
+                'alamat.required' => 'Alamat harus diisi',
+                'no_telp.required' => 'Nomor telepon harus diisi',
+                'no_telp.unique' => 'Nomor telepon ini sudah dipakai',
+                'email.required' => 'Email harus diisi',
+                'email.email' => 'Format email tidak valid',
+                'email.unique' => 'Email ini sudah dipakai'
             ]);
         
             $supplier = Supplier::create($validated);
@@ -46,11 +56,17 @@ class SupplierController extends Controller
             if(!$supplier) {
                 throw new \Exception('Gagal menyimpan data supplier');
             }
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Supplier berhasil ditambahkan'
             ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Error creating supplier: ' . $e->getMessage());
             return response()->json([
@@ -149,4 +165,5 @@ class SupplierController extends Controller
     {
         return Excel::download(new SupplierExport, 'supplier.xlsx');
     }
+
 }

@@ -252,4 +252,15 @@ class TransaksiController extends Controller
     {
         return Excel::download(new TransaksiExport, 'transaksi.xlsx');
     }
+
+    public function downloadInvoice($id)
+    {
+        $transaksi = Transaksi::with('produk')->findOrFail($id);
+        
+        $pdf = PDF::loadView('transaksi.invoice', [
+            'transaksi' => $transaksi
+        ]);
+
+        return $pdf->download('invoice-'.$transaksi->kode_transaksi.'.pdf');
+    }
 }

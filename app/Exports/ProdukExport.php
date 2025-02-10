@@ -14,9 +14,28 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
+    protected $request;
+
+    public function __construct($request)
+    {
+        $this->request = $request;
+    }
+
     public function collection()
     {
-        return Produk::with('supplier')->get();
+        $query = Produk::with('supplier');
+
+        // Filter by kategori
+        if ($this->request->filled('kategori')) {
+            $query->where('kategori', $this->request->kategori);
+        }
+
+        // Filter by supplier
+        if ($this->request->filled('supplier')) {
+            $query->where('id_supplier', $this->request->supplier);
+        }
+
+        return $query->get();
     }
 
     public function headings(): array

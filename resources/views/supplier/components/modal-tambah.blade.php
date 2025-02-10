@@ -48,7 +48,7 @@
                     </div>
 
                     <!-- Kolom Kanan - Form -->
-                    <div class="bg-white">
+                    <div class="bg-white" >
                         <!-- Header -->
                         <div class="flex items-center justify-between px-6 py-4 border-b">
                             <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -61,7 +61,7 @@
                             >
                                 <i class="fas fa-times"></i>
                             </button>
-                        </div>
+                        </div> 
 
                         <!-- Body -->
                         <div class="px-6 py-4">
@@ -72,6 +72,14 @@
                                 })
                                 .then(response => response.json())
                                 .then(data => {
+                                    if (!data.success) {
+                                        let errorMessage = data.message;
+                                        if (data.errors) {
+                                            errorMessage = Object.values(data.errors)[0][0];
+                                        }
+                                        throw new Error(errorMessage);
+                                    }
+                                    
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil!',
@@ -86,7 +94,7 @@
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Gagal menambahkan supplier'
+                                        text: error.message || 'Gagal menambahkan supplier'
                                     });
                                 })
                             ">
