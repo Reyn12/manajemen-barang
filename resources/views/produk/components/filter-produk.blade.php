@@ -92,9 +92,13 @@
         downloadExcel() {
             const currentUrl = new URL(window.location.href);
             const searchParams = currentUrl.searchParams;
+            // Tambahkan parameter kategori jika ada
+            if ('{{ request("kategori") }}') {
+                searchParams.set('kategori', '{{ request("kategori") }}');
+            }
             window.location.href = `/produk/download/excel?${searchParams.toString()}`;
             this.showDownloadModal = false;
-        }
+        },
     }" class="mr-4">
         <button type="button" @click="showDownloadModal = true" 
             class="flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-900 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-blue-950">

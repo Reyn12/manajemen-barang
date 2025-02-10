@@ -24,26 +24,15 @@ class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldA
     public function collection()
     {
         $query = Produk::with('supplier');
-        
-        // Apply filters
-        if ($this->request->has('search')) {
-            $search = $this->request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nama_produk', 'like', "%{$search}%")
-                  ->orWhere('kode_produk', 'like', "%{$search}%");
-            });
+
+        // Filter by kategori
+        if ($this->request->filled('kategori')) {
+            $query->where('kategori', $this->request->kategori);
         }
-        
-        if ($this->request->has('supplier')) {
+
+        // Filter by supplier
+        if ($this->request->filled('supplier')) {
             $query->where('id_supplier', $this->request->supplier);
-        }
-        
-        if ($this->request->has('min_stok')) {
-            $query->where('stok', '>=', $this->request->min_stok);
-        }
-        
-        if ($this->request->has('max_stok')) {
-            $query->where('stok', '<=', $this->request->max_stok);
         }
 
         return $query->get();
