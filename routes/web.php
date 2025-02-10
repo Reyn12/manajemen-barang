@@ -41,4 +41,5 @@ Route::prefix('transaksi')->group(function () {
     Route::delete('/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
     Route::get('/download/pdf', [TransaksiController::class, 'downloadPDF'])->name('transaksi.download.pdf');
     Route::get('/download/excel', [TransaksiController::class, 'downloadExcel'])->name('transaksi.download.excel');
+    Route::get('/transaksi/invoice/{id}', [TransaksiController::class, 'downloadInvoice'])->name('transaksi.download-invoice');
 });
