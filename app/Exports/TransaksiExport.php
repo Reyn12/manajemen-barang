@@ -9,13 +9,37 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-
+use PhpOffice\PhpSpreadsheet\Style\Fill;  
+ 
 class TransaksiExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
+    protected $request;  // <-- tambah ini
+
+    public function __construct($request)  // <-- tambah ini
+    {
+        $this->request = $request;
+    }
+
     public function collection()
     {
-        return Transaksi::with(['produk', 'produk.supplier'])->get();
+        $query = Transaksi::with('produk');
+    
+        // Apply filters
+        if ($this->request->filled('tanggal_awal')) {
+            $query->whereDate('created_at', '>=', $this->request->tanggal_awal);
+        }
+        if ($this->request->filled('tanggal_akhir')) {
+            $query->whereDate('created_at', '<=', $this->request->tanggal_akhir);
+        }
+        if ($this->request->filled('jenis')) {
+            $query->where('jenis', $this->request->jenis);
+        }
+        // Tambah ini
+        if ($this->request->filled('status')) {
+            $query->where('status_bayar', $this->request->status);
+        }
+    
+        return $query->get();
     }
 
     public function headings(): array

@@ -20,11 +20,15 @@
     <div x-data="{
         showDownloadModal: false,
         downloadPDF() {
-            window.location.href = '/transaksi/download/pdf';
+            const currentUrl = new URL(window.location.href);
+            const searchParams = currentUrl.searchParams;
+            window.location.href = `/transaksi/download/pdf?${searchParams.toString()}`;
             this.showDownloadModal = false;
         },
         downloadExcel() {
-            window.location.href = '/transaksi/download/excel';
+            const currentUrl = new URL(window.location.href);
+            const searchParams = currentUrl.searchParams;
+            window.location.href = `/transaksi/download/excel?${searchParams.toString()}`;
             this.showDownloadModal = false;
         }
     }" class="flex items-center gap-4 flex-1">
