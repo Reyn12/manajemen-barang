@@ -14,9 +14,39 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ProdukExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
+    protected $request;
+
+    public function __construct($request)
+    {
+        $this->request = $request;
+    }
+
     public function collection()
     {
-        return Produk::with('supplier')->get();
+        $query = Produk::with('supplier');
+        
+        // Apply filters
+        if ($this->request->has('search')) {
+            $search = $this->request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_produk', 'like', "%{$search}%")
+                  ->orWhere('kode_produk', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($this->request->has('supplier')) {
+            $query->where('id_supplier', $this->request->supplier);
+        }
+        
+        if ($this->request->has('min_stok')) {
+            $query->where('stok', '>=', $this->request->min_stok);
+        }
+        
+        if ($this->request->has('max_stok')) {
+            $query->where('stok', '<=', $this->request->max_stok);
+        }
+
+        return $query->get();
     }
 
     public function headings(): array

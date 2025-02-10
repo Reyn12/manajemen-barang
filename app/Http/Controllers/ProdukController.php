@@ -225,15 +225,38 @@ class ProdukController extends Controller
         }
     }
 
-    public function downloadPDF()
+    public function downloadPDF(Request $request)
     {
-        $produks = Produk::with('supplier')->get();
+        // Debug full request
+        Log::info('Full request: ' . json_encode($request->all()));
+
+        $query = Produk::with('supplier');
+
+        // Filter by kategori
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        // Filter by supplier (hanya jika supplier dipilih)
+        if ($request->filled('supplier')) {
+            $query->where('id_supplier', $request->supplier);
+        }
+
+        // Debug query
+        Log::info('Query: ' . $query->toSql());
+        Log::info('Query bindings: ' . json_encode($query->getBindings()));
+
+        $produks = $query->get();
+        
+        // Debug result
+        Log::info('Result count: ' . $produks->count());
+
         $pdf = Pdf::loadView('produk.export.pdf', compact('produks'));
         return $pdf->download('produk.pdf');
     }
 
-    public function downloadExcel()
+    public function downloadExcel(Request $request)
     {
-        return Excel::download(new ProdukExport, 'produk.xlsx');
+        return Excel::download(new ProdukExport($request), 'produk.xlsx');
     }
 }

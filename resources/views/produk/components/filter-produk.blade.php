@@ -80,11 +80,19 @@
     <div x-data="{
         showDownloadModal: false,
         downloadPDF() {
-            window.location.href = '/produk/download/pdf';
+            const currentUrl = new URL(window.location.href);
+            const searchParams = currentUrl.searchParams;
+            // Tambahkan parameter kategori jika ada
+            if ('{{ request("kategori") }}') {
+                searchParams.set('kategori', '{{ request("kategori") }}');
+            }
+            window.location.href = `/produk/download/pdf?${searchParams.toString()}`;
             this.showDownloadModal = false;
         },
         downloadExcel() {
-            window.location.href = '/produk/download/excel';
+            const currentUrl = new URL(window.location.href);
+            const searchParams = currentUrl.searchParams;
+            window.location.href = `/produk/download/excel?${searchParams.toString()}`;
             this.showDownloadModal = false;
         }
     }" class="mr-4">
