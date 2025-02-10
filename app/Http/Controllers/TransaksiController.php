@@ -236,21 +236,38 @@ class TransaksiController extends Controller
         }
     }
     
-    public function export() 
+    public function export(Request $request) 
     {
-        return Excel::download(new TransaksiExport, 'transaksi_' . date('Y-m-d') . '.xlsx');
+        return Excel::download(new TransaksiExport($request), 'transaksi_' . date('Y-m-d') . '.xlsx');
     }
 
-    public function downloadPDF()
+    public function downloadPDF(Request $request)
     {
-        $transaksis = Transaksi::with('produk')->get();
-        $pdf = Pdf::loadView('transaksi.export.pdf', compact('transaksis'));
+        $query = Transaksi::with(['produk']);
+    
+        // Apply filters
+        if ($request->filled('tanggal_awal')) {
+            $query->whereDate('created_at', '>=', $request->tanggal_awal);
+        }
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+        }
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+        }
+        // Tambah ini
+        if ($request->filled('status')) {
+            $query->where('status_bayar', $request->status);
+        }
+    
+        $transaksis = $query->get();
+        $pdf = PDF::loadView('transaksi.export.pdf', compact('transaksis'));
         return $pdf->download('transaksi.pdf');
     }
 
-    public function downloadExcel()
+    public function downloadExcel(Request $request)
     {
-        return Excel::download(new TransaksiExport, 'transaksi.xlsx');
+        return Excel::download(new TransaksiExport($request), 'transaksi_' . date('Y-m-d') . '.xlsx');
     }
 
     public function downloadInvoice($id)
